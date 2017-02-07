@@ -1,0 +1,17 @@
+
+*.EXE
+*.OBJ
+*.MAK
+*.CFG
+*.COM
+*.SWP
+*.OVL
+*.DLL
+*.BAK
+*.CPP
+*.DPR
+*.TC
+*.DSK
+*.TCH
+rocket.bmp
+Paint_lib/
