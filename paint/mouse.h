@@ -5,28 +5,31 @@
  */
 unsigned int ** bufferMouse;
 
-#define I   15  //outer color mouse
-#define X   17  //inner color mouse
+#define O   12  //outer color mouse
+#define I   0  //inner color mouse
+#define mouseWidth 13
+#define mouseHeight 16
+
 
 /* mouse form */
-static unsigned char pointer[12*16] =
+static unsigned char pointer[mouseWidth * mouseHeight] =
 {
-  I,I,0,0,0,0,0,0,0,0,0,0,
-  I,I,I,0,0,0,0,0,0,0,0,0,
-  I,X,I,I,0,0,0,0,0,0,0,0,
-  I,X,X,I,I,0,0,0,0,0,0,0,
-  I,X,X,X,I,I,0,0,0,0,0,0,
-  I,X,X,X,X,I,I,0,0,0,0,0,
-  I,X,X,X,X,X,I,I,0,0,0,0,
-  I,X,X,X,X,X,X,I,I,0,0,0,
-  I,X,X,X,X,X,X,X,I,I,0,0,
-  I,X,X,X,X,X,X,X,X,I,I,0,
-  I,X,X,X,X,X,I,I,I,I,I,0,
-  I,X,X,I,X,X,X,I,I,0,0,0,
-  I,X,I,I,I,X,X,I,I,0,0,0,
-  I,I,I,0,I,X,X,X,I,0,0,0,
-  I,0,0,0,I,I,X,X,I,0,0,0,
-  0,0,0,0,I,I,I,I,I,0,0,0,
+  O,O,O,0,0,0,0,0,0,0,0,0,0,
+  O,O,O,O,0,0,0,0,0,0,0,0,0,
+  O,O,I,O,O,0,0,0,0,0,0,0,0,
+  O,O,I,I,O,O,0,0,0,0,0,0,0,
+  O,O,I,I,I,O,O,0,0,0,0,0,0,
+  O,O,I,I,I,I,O,O,0,0,0,0,0,
+  O,O,I,I,I,I,I,O,O,0,0,0,0,
+  O,O,I,I,I,I,I,I,O,O,0,0,0,
+  O,O,I,I,I,I,I,I,I,O,O,0,0,
+  O,O,I,I,I,I,I,I,I,I,O,O,0,
+  O,O,I,I,I,I,I,I,O,O,O,O,0,
+  O,O,I,I,I,I,I,I,O,O,0,0,0,
+  O,O,O,O,O,O,I,I,O,O,0,0,0,
+  O,O,O,O,O,O,I,I,I,O,0,0,0,
+  0,0,0,0,O,O,O,I,I,O,0,0,0,
+  0,0,0,0,0,O,O,O,O,O,0,0,0,
 };
 
 
@@ -47,10 +50,10 @@ void mouseShow(int x, int y) {
     }
   }
 
-  for (i=0; i < 16; i++) {
-    for (j=0; j < 12; j++) {
-      if (pointer[12*i+j]!=0){
-        putPixel(x + j, y + i, pointer[12*i+j]);
+  for (i=0; i < mouseHeight; i++) {
+    for (j=0; j < mouseWidth; j++) {
+      if (pointer[mouseWidth*i+j]!=0){
+        putPixel(x + j, y + i, pointer[mouseWidth*i+j]);
       }
     }
   }
@@ -62,7 +65,7 @@ void getMouse(int *x0, int *y0, int *b){
   asm {
     MOV AX, 03H                 //obtains reuslt
     INT 33H         
-    AND BX, 0000000000000011B
+    AND BX, 11B
     MOV button, BX              //saves result
     MOV x, CX             
     MOV y, DX             

@@ -26,7 +26,7 @@ void main() {
     printf("\r\n SVGA Error\r\n");
     return;
   }
-
+  
   putPixel(50, 50, 1);
   initMouse();
   validateMouse(MAX_X, MAX_Y);
@@ -36,7 +36,10 @@ void main() {
 
   while (1) {
     repaintMouse(&x, &y, &buffer, &xtemp, &ytemp);
+
     if (buffer == 1) {
+
+      //close button
       if (x >= 768 && x <= 795 &&
           y >= 0 && y <= 26 ) {
           exitSVGA();
