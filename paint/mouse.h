@@ -12,7 +12,7 @@ unsigned int ** bufferMouse;
 
 
 /* mouse form */
-static unsigned char pointer[mouseWidth * mouseHeight] =
+static unsigned char mouse[mouseWidth * mouseHeight] =
 {
   O,O,O,0,0,0,0,0,0,0,0,0,0,
   O,O,O,O,0,0,0,0,0,0,0,0,0,
@@ -54,27 +54,27 @@ void mouseShow(int x, int y) {
 
   for (i=0; i < mouseHeight; i++) {
     for (j=0; j < mouseWidth; j++) {
-      if (pointer[mouseWidth*i+j]!=0){
-        putPixel(x + j, y + i, pointer[mouseWidth*i+j]);
+      if (mouse[mouseWidth*i+j]!=0){
+        putPixel(x + j, y + i, mouse[mouseWidth*i+j]);
       }
     }
   }
 }
 
-// get mouse position
-void getMouse(int *x0, int *y0, int *b){
-  int x, y, button;
+// get mouse state
+void getMouse(int *mouse_x, int *mouse_y, int *clicked){
+  int posx, posy, click_button;
   asm {
-    MOV AX, 03H                 //obtains reuslt
+    MOV AX, 03H                 
     INT 33H         
-    AND BX, 11B
-    MOV button, BX              //saves result
-    MOV x, CX             
-    MOV y, DX             
+    AND BX, 0000000000000011B                 //obtains reuslt
+    MOV click_button, BX             
+    MOV posx, CX             
+    MOV posy, DX             
   }
-  *x0 = x;
-  *y0 = y;
-  *b = button;
+  *mouse_x = posx;
+  *mouse_y = posy;
+  *clicked = click_button;             //saves result
 }
 
 // Sets max boundaries for mouse

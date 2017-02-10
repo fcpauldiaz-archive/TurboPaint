@@ -25,9 +25,9 @@
 
 void paintCanvas() {
   int i, j;
-  for(i=150;i<800;i++){
-    for(j=0;j<600;j++){
-      putPixel(i, j, -2);
+  for (i=0; i < 800; i++) {
+    for (j=140; j < 600 ;j++) {
+      putPixel(i, j, -1);
     }
   }
 }

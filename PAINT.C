@@ -20,8 +20,9 @@
 #define MAX_Y 600
 
 void main() {
-  int x, y, buffer, xtemp, ytemp;
+  int x, y, clicked, xtemp, ytemp;
   int button, selectedBtn;
+  int x1, y1, tempx, tempy;
   int selectedWidth; //select width of line
   BITMAP bitmap;
   //el primer parametro es el modo
@@ -30,27 +31,58 @@ void main() {
     printf("\r\n SVGA Error\r\n");
     return;
   }
-
-  putPixel(50, 50, 1);
+  clicked = 0;
   initMouse();
   validateMouse(MAX_X, MAX_Y);
-  getMouse(&x, &y, &buffer);
+  getMouse(&x, &y, &clicked);
 
   openBMP(0, 0, "paint/pfondo.bmp",&bitmap);
-  drawLine(50, 300, 750, 300, 15, 10);
-  //paintCanvas();
+  
+  paintCanvas();
   while (1) {
-    repaintMouse(&x, &y, &buffer, &xtemp, &ytemp);
+    repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
 
-    if (buffer == 1) {
+    if (clicked == 1) {
+
+      //LINE BUTTON SELECTED
+      if (x >= 364 && x <= 391 && y >= 48 && y < 81) {
+        button = LINE;
+        drawLine(50, 300, 750, 300, 15, 10);
+      }      
+
+      if (button != selectedBtn) {
+        mouseHide(x, y);
+        selectedBtn = button;
+        mouseShow(x, y);
+        clicked = 0;
+      }
+      if (y > y1_Draw) {
+        switch(selectedBtn) {
+          case LINE:
+            x1 = x;
+            y1 = y;
+            getMouse(&x,&y,&clicked);
+            while(clicked==1) {
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+              //drawLine(x1, y1, x, y, 128, 5);
+              //drawLine(x1, y1, x, y, -1, 5);
+            }
+            mouseHide(x, y);
+            drawLine(x1,y1,x,y, 128, 5);
+            mouseShow(x, y);
+            x1 = x; y1 = y; 
+            break;
+        }
+      }
 
       //close button
       if (x >= 768 && x <= 795 &&
           y >= 0 && y <= 26 ) {
+          clicked = 0;
           exitSVGA();
           break;
       }
     }
   }
-  
 }
+  

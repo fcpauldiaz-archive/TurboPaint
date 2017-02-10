@@ -2,7 +2,7 @@
 #include <time.h>
 
 #define x1_Draw 0
-#define y1_Draw 120
+#define y1_Draw 140
 #define x2_Draw 800
 #define y2_Draw 600
 
