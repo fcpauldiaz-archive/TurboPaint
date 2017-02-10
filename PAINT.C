@@ -13,12 +13,16 @@
 #include "paint/graphic.h"
 #include "paint/mouse.h";
 #include "paint/bmpfiles.h";
+#include "paint/buttons.h";
+#include "paint/shapes.h";
 
 #define MAX_X 800
 #define MAX_Y 600
 
 void main() {
   int x, y, buffer, xtemp, ytemp;
+  int button, selectedBtn;
+  int selectedWidth; //select width of line
   BITMAP bitmap;
   //el primer parametro es el modo
   //del registro BX
@@ -26,14 +30,15 @@ void main() {
     printf("\r\n SVGA Error\r\n");
     return;
   }
-  
+
   putPixel(50, 50, 1);
   initMouse();
   validateMouse(MAX_X, MAX_Y);
   getMouse(&x, &y, &buffer);
 
   openBMP(0, 0, "paint/pfondo.bmp",&bitmap);
-
+  drawLine(50, 300, 750, 300, 15, 10);
+  //paintCanvas();
   while (1) {
     repaintMouse(&x, &y, &buffer, &xtemp, &ytemp);
 

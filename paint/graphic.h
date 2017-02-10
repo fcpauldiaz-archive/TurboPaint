@@ -4,7 +4,8 @@
  * Paint en C++ y assembler de Intel
  */
 
-long resolY, resolX, screenX, screenY, numberOfPages;
+long resolY, resolX;
+long screenX, screenY, numberOfPages;
 char currentPage;
 
 int SVGA(int mode, long w, long h){
@@ -36,7 +37,8 @@ void exitSVGA() {
   }
 }
 
-//This sets the bank of the SVGA memory to currently write.
+//This sets the page of 
+//the SVGA memory to currently write.
 void setPage(char page){
   asm {
     MOV AL, [page]
@@ -59,8 +61,8 @@ void putPixel(int x, int y, char drawcolor){
   int pixelOffset;
   char page;
 
-  //Verificación de los límites de la pantalla.
-  if (x > screenX || x<0 || y > screenY || y < 0) {
+  //verify limits
+  if (x > screenX || x < 0 || y > screenY || y < 0) {
     return;
   }
 
@@ -68,7 +70,7 @@ void putPixel(int x, int y, char drawcolor){
   page = memoryPosition >> 16;
   pixelOffset = memoryPosition - (page << 16);
  
-  //Se cambia a la pagina correcta
+  //change to correct page
   if (page != currentPage){
     setPage(page);
     currentPage = page;

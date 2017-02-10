@@ -42,10 +42,12 @@ void initMouse() {
 
 void mouseShow(int x, int y) {
   int i,j;
-  bufferMouse = malloc(sizeof(int) * 12);
-  for (i= 0; i < 12; i++) {
-    bufferMouse[i] = malloc(sizeof(int) * 16);
-    for (j=0; j < 16; j++) {
+  //allocates memory and returns pointer to it
+  //receives size to allocate
+  bufferMouse = malloc(sizeof(int) * mouseWidth);
+  for (i= 0; i < mouseWidth; i++) {
+    bufferMouse[i] = malloc(sizeof(int) * mouseHeight);
+    for (j=0; j < mouseHeight; j++) {
       bufferMouse[i][j] = getPixel(x+i, y+j);
     }
   }
@@ -98,12 +100,14 @@ void validateMouse(int x_limit, int y_limit) {
 // Hides mouse from screen
 void mouseHide(int x, int y) {
   int i,j;
-  for (i=0; i < 12; i++) {
-    for (j=0; j < 16; j++) {
+  for (i=0; i < mouseWidth; i++) {
+    for (j=0; j < mouseHeight; j++) {
       putPixel(x+i,y+j,bufferMouse[i][j]);
     }
+    //deallocates the memory, receives pointer
     free(bufferMouse[i]);
   }
+  //deallocates the memory, receives pointer
   free(bufferMouse);
 }
 
