@@ -41,6 +41,7 @@ void main() {
   clicked = 0;
   //paintCanvas();
   paintPalette(FULL_PALETTE);
+  drawLine(90, 300, 50, 250, 15, 10);
   while (1) {
     repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
 
@@ -49,7 +50,11 @@ void main() {
       //LINE BUTTON SELECTED
       if (x >= 364 && x <= 391 && y >= 48 && y < 81) {
         button = LINE;
-        drawLine(50, 300, 750, 300, 15, 10);
+        
+      }
+      //RECTANGLE SELECTED
+      if (x >= 326 && x <= 363 && y >= 82 && y <= 118) {
+        button = RECTANGLE;
       }      
 
       if (button != selectedBtn) {
@@ -75,6 +80,9 @@ void main() {
             drawLine(x1,y1,x,y, 12, 5);
             mouseShow(x, y);
             x1 = x; y1 = y; 
+            break;
+          case RECTANGLE:
+
             break;
         }
       }

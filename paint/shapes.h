@@ -112,43 +112,54 @@ void draw_line_antialias(
     }
   }
 }
+//Digital Differential Analyzer (DDA) algorithm 
+//https://www.tutorialspoint.com/computer_graphics/line_generation_algorithm.htm
 void drawLine(int x1, int y1, int x2, int y2, int color, int width) {
   int i;
   int sdx, sdy;
-  int x, y, px, py;
+  float x, y;
+  float pixels_x,  pixels_y;
   int dx = x2 - x1;
   int dy = y2 - y1;
-
+  float steps;
+  //decides direction to paint
   sdx = sign(dx);
   sdy = sign(dy);
 
   x = fabs(dy)/2.0;
   y = fabs(dx)/2.0; 
 
-  px = x1;
-  py = y1;
- 
+  pixels_x = x1;
+  pixels_y = y1;
+  //difference from x is bigger
   if (fabs(dx) >= fabs(dy)){
-    for (i=0; i < fabs(dx); i++) {
-      y += fabs(dy);
-      if ( y >= fabs(dx)){
-        y -= fabs(dx);
-        py += sdy;
-      }
-      px += sdx;
-      if (px > x1_Draw && px < x2_Draw && py > y1_Draw && py < y2_Draw)
-        putPixelWidth(px,py,color, width);
+    steps = fabs(dx);
+    x = dx/(float)steps;
+    y = dy/(float)steps;
+    for (i=0; i < steps; i++) {
+      pixels_x = pixels_x + x;
+      pixels_y = pixels_y + y;
+      if (pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+        putPixelWidth((int)pixels_x, (int)pixels_y,color, width);
     }
   } else {
-    for( i=0; i < fabs(dy);i++) {
-      x += fabs(dx);
-      if (x >= fabs(dy)){
-        x -= fabs(dy);
-        px += sdx;
-      }
-      py += sdy;
-      if (px > x1_Draw && px < x2_Draw && py > y1_Draw && py < y2_Draw)
-        putPixelWidth(px,py,color, width);
+    steps = fabs(dy);
+    x = dx/(float)steps;
+    y = dy/(float)steps;
+    for (i=0; i < steps; i++) {
+      pixels_x = pixels_x + x;
+      pixels_y = pixels_y + y;
+      if (pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+        putPixelWidth((int)pixels_x, (int)pixels_y,color, width);
     }
   }
 }
+
+//draw rectangle with no fill
+void drawRectangle(int x1, int y1, int x2, int y2, int color, int width) {
+  drawLine(x1,y1,x2,y1,color,width);
+  drawLine(x1,y1,x1,y2,color,width);
+  drawLine(x2,y1,x2,y2,color,width);
+  drawLine(x1,y2,x2,y2,color,width);
+}
+
