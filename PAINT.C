@@ -22,7 +22,7 @@
 
 void main() {
   int x, y, clicked, xtemp, ytemp;
-  int button, selectedBtn;
+  int button, selectedBtn, tempColor;
   int x1, y1, tempx, tempy;
   int selectedWidth; //select width of line
   BITMAP bitmap;
@@ -82,7 +82,14 @@ void main() {
             x1 = x; y1 = y; 
             break;
           case RECTANGLE:
-
+            x1 = x;
+            y1 = y;
+            while(clicked == 1) {
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+            }
+            mouseHide(x, y);
+            drawRectangle(x1, y1, x, y, 180, 5);
+            mouseShow(x, y);
             break;
         }
       }
