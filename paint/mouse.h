@@ -62,6 +62,7 @@ void mouseShow(int x, int y) {
 }
 
 // get mouse state
+// https://courses.engr.illinois.edu/ece390/books/labmanual/io-devices-mouse.html
 void getMouse(int *mouse_x, int *mouse_y, int *clicked){
   int posx, posy, click_button;
   asm {
@@ -113,8 +114,8 @@ void mouseHide(int x, int y) {
 
 
 //update mouse position
-void repaintMouse(int *x, int *y, int *b, int *xtemp, int *ytemp) {
-  getMouse(x, y, b);
+void repaintMouse(int *x, int *y, int *clicked, int *xtemp, int *ytemp) {
+  getMouse(x, y, clicked);
   if (*xtemp != *x || *ytemp != *y) {
     mouseHide(*xtemp, *ytemp);
     mouseShow(*x, *y);

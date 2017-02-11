@@ -62,7 +62,7 @@ void putPixel(int x, int y, char drawcolor){
   char page;
 
   //verify limits
-  if (x > screenX || x < 0 || y > screenY || y < 0) {
+  if (x > screenX || x <0 || y > screenY || y < 0) {
     return;
   }
 
@@ -95,6 +95,16 @@ void putPixelWidth(int x, int y, int color, int width) {
   }
 }
 
+//paint a pixel with more width
+//only apply width on X
+void putPixelWidthX(int x, int y, int color, int width) {
+  int i, j;
+  for (i = 0; i < width; i++) {
+    for ( j = 0; j < width; j++) {
+      putPixel(x + j, y, color);
+    }
+  }
+}
 
 // turbo c
 // colors

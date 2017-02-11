@@ -15,6 +15,7 @@
 #include "paint/bmpfiles.h";
 #include "paint/buttons.h";
 #include "paint/shapes.h";
+#include "paint/palette.h";
 
 #define MAX_X 800
 #define MAX_Y 600
@@ -31,19 +32,20 @@ void main() {
     printf("\r\n SVGA Error\r\n");
     return;
   }
-  clicked = 0;
+  
   initMouse();
   validateMouse(MAX_X, MAX_Y);
   getMouse(&x, &y, &clicked);
 
   openBMP(0, 0, "paint/pfondo.bmp",&bitmap);
-  
-  paintCanvas();
+  clicked = 0;
+  //paintCanvas();
+  paintPalette(FULL_PALETTE);
   while (1) {
     repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
 
     if (clicked == 1) {
-
+      
       //LINE BUTTON SELECTED
       if (x >= 364 && x <= 391 && y >= 48 && y < 81) {
         button = LINE;
@@ -64,11 +66,13 @@ void main() {
             getMouse(&x,&y,&clicked);
             while(clicked==1) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+              //this could repaint the line in real time
+              //but it ereases everything else
               //drawLine(x1, y1, x, y, 128, 5);
               //drawLine(x1, y1, x, y, -1, 5);
             }
             mouseHide(x, y);
-            drawLine(x1,y1,x,y, 128, 5);
+            drawLine(x1,y1,x,y, 12, 5);
             mouseShow(x, y);
             x1 = x; y1 = y; 
             break;

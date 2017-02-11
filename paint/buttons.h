@@ -1,11 +1,11 @@
-
-#define LINE 1
-#define PENCIL 2
-#define CIRCLE 3
+#define FULL_PALETTE 0 //0 false y 1 true
+#define LINE 1        //check
+#define RECTANGLE 2  
+#define CIRCLE 3  
 #define CIRCLE_FILL 4
 #define ELLIPSE 5
 #define ELLIPSE_FILL 6
-#define RECTANGLE 7
+#define PENCIL 7   
 #define RECTANGLE_FILL 8
 #define BUCKET 9
 #define SPRAY 10
@@ -23,11 +23,7 @@
 #define UNDO 22
 #define SELECTED_COLOR 23
 
-void paintCanvas() {
-  int i, j;
-  for (i=0; i < 800; i++) {
-    for (j=140; j < 600 ;j++) {
-      putPixel(i, j, -1);
-    }
-  }
-}
+#define COLORS_X1 526
+#define COLORS_X2 794
+#define COLORS_Y1 29
+#define COLORS_Y2 89
