@@ -1,6 +1,8 @@
 
 void paintFewPalette();
 void paintFullPalette();
+void paintColorPickerOne();
+void paintColorPickerTwo();
 
 void paintCanvas() {
   int i, j;
@@ -18,6 +20,8 @@ void paintPalette(int full) {
   else {
     paintFewPalette();
   }
+  paintColorPickerOne(0);
+  paintColorPickerTwo(0);
 }
 
 //PAINT FEW COLORS
@@ -77,4 +81,16 @@ void paintFullPalette() {
     j = j + 5;
   }
   //prints 255 colors
+}
+
+void paintColorPickerOne(int color) {
+  forceDraw = 1;
+  paintRectangle(568, 95, 610, 130, 0, color, 2);
+  forceDraw = 0;
+}
+
+void paintColorPickerTwo(int color) {
+  forceDraw = 1;
+  paintRectangle(568, 95, 610, 130, 0, color, 2);
+  forceDraw = 0;
 }

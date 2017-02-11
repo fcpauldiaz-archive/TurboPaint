@@ -41,7 +41,7 @@ void main() {
   clicked = 0;
   //paintCanvas();
   paintPalette(FULL_PALETTE);
-  drawLine(90, 300, 50, 250, 15, 10);
+  
   while (1) {
     repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
 
@@ -84,7 +84,7 @@ void main() {
           case RECTANGLE:
             x1 = x;
             y1 = y;
-            while(clicked == 1) {
+            while (clicked == 1) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
             }
             mouseHide(x, y);

@@ -6,7 +6,7 @@
 #define x2_Draw 800
 #define y2_Draw 600
 
-int drawGUI = 1;
+int forceDraw = 0;
 int tmp;
 
 
@@ -139,7 +139,7 @@ void drawLine(int x1, int y1, int x2, int y2, int color, int width) {
     for (i=0; i < steps; i++) {
       pixels_x = pixels_x + x;
       pixels_y = pixels_y + y;
-      if (pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
         putPixelWidth((int)pixels_x, (int)pixels_y,color, width);
     }
   } else {
@@ -149,7 +149,7 @@ void drawLine(int x1, int y1, int x2, int y2, int color, int width) {
     for (i=0; i < steps; i++) {
       pixels_x = pixels_x + x;
       pixels_y = pixels_y + y;
-      if (pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
         putPixelWidth((int)pixels_x, (int)pixels_y,color, width);
     }
   }
@@ -161,5 +161,24 @@ void drawRectangle(int x1, int y1, int x2, int y2, int color, int width) {
   drawLine(x1,y1,x1,y2,color,width);
   drawLine(x2,y1,x2,y2,color,width);
   drawLine(x1,y2,x2,y2,color,width);
+}
+
+//this results to be innecefient
+/*
+void paintRectangle(int x1, int y1, int x2, int y2, int outerColor, int innerColor, int width) {
+  int i, x3, x4, y3, y4;
+  drawRectangle(x1, y1, x2, y2, outerColor, width);
+  x3 = x1 + width;
+  for (i = x3; i < x2; i++) {
+    drawRectangle(i, y1+width, x2-width, y2, innerColor, 1);
+  }
+}*/
+
+void paintRectangle(int x1, int y1, int x2, int y2, int outerColor, int innerColor, int width) {
+  int i;
+  for (i = y1; i < y2; i++) {
+    drawLine(x1, i, x2, i, innerColor, 1);
+  }
+  drawRectangle(x1, y1, x2, y2, outerColor, width);
 }
 
