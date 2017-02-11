@@ -7,7 +7,7 @@ void paintColorPickerTwo();
 void paintCanvas() {
   int i, j;
   for (i=0; i < 800; i++) {
-    for (j=140; j < 600 ;j++) {
+    for (j=140; j < 600; j++) {
       putPixel(i, j, 255);
     }
   }
@@ -20,8 +20,8 @@ void paintPalette(int full) {
   else {
     paintFewPalette();
   }
-  paintColorPickerOne(0);
-  paintColorPickerTwo(0);
+  paintColorPickerOne(COLOR_FILL_1);
+  paintColorPickerTwo(COLOR_FILL_2);
 }
 
 //PAINT FEW COLORS
@@ -29,15 +29,15 @@ void paintFewPalette() {
  int i, j, color;
   color = 0;
 
-  for(j=526; j < 794; color = color + 5){
+  for(j=526; j < 794; color = color + 5) {
     for(i=30; i < 50;i++){
       putPixelWidth(j, i, color, 10);
     }
     j = j + 10;
   }
 
-  for(j=526; j < 794; color = color + 5){
-    for(i=61; i < 80;i++){
+  for(j=526; j < 794; color = color + 5) {
+    for(i=61; i < 80;i++){ 
       putPixelWidth(j, i, color, 10);
     }
     j = j + 10;
@@ -50,32 +50,32 @@ void paintFewPalette() {
 void paintFullPalette() {
   int i, j, color;
   color = 0;
-  for(j=526; j < 794;color++){
-    for(i=30; i < 40;i++){
+  for (j=526; j < 794; color++) {
+    for (i=30; i < 40; i++) {
       putPixelWidthX(j, i, color, 5);
     }
     j = j + 5;
   }
-  for(j=526; j < 794; color++){
-    for(i=41; i<50;i++){
+  for (j=526; j < 794; color++) {
+    for (i=41; i < 50; i++){ 
       putPixelWidthX(j, i, color, 5);
     }
     j = j + 5;
   }
-  for(j=526; j < 794; color++){
-    for(i=51; i<60;i++){
+  for (j=526; j < 794; color++) {
+    for (i=51; i < 60; i++){
       putPixelWidthX(j, i, color, 5);
     }
     j = j + 5;
   }
-  for(j=526; j < 794; color++){
-    for(i=61; i < 70;i++){
+  for (j=526; j < 794; color++) {
+    for (i=61; i < 70; i++){
       putPixelWidthX(j, i, color, 5);
     }
     j = j + 5;
   }
-  for(j=526; j < 724; color++){
-    for(i=71; i<80;i++){
+  for (j=526; j < 724; color++) { 
+    for (i=71; i < 80; i++){
       putPixelWidthX(j, i, color, 5);
     }
     j = j + 5;
@@ -85,7 +85,7 @@ void paintFullPalette() {
 
 void paintColorPickerOne(int color) {
   forceDraw = 1;
-  paintRectangle(568, 95, 610, 130, 0, color, 2);
+  paintRectangle(526, 95, 565, 130, 0, color, 2);
   forceDraw = 0;
 }
 

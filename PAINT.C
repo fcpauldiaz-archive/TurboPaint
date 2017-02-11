@@ -10,6 +10,7 @@
 #include <math.h>
 #include <time.h>
 
+
 #include "paint/graphic.h"
 #include "paint/mouse.h";
 #include "paint/bmpfiles.h";
@@ -24,7 +25,7 @@ void main() {
   int x, y, clicked, xtemp, ytemp;
   int button, selectedBtn, tempColor;
   int x1, y1, tempx, tempy;
-  int selectedWidth; //select width of line
+  int selectedWidth, colorFill; //select width of line
   BITMAP bitmap;
   //el primer parametro es el modo
   //del registro BX
@@ -41,7 +42,8 @@ void main() {
   clicked = 0;
   //paintCanvas();
   paintPalette(FULL_PALETTE);
-  
+  colorFill = 1;
+
   while (1) {
     repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
 
@@ -55,8 +57,28 @@ void main() {
       //RECTANGLE SELECTED
       if (x >= 326 && x <= 363 && y >= 82 && y <= 118) {
         button = RECTANGLE;
-      }      
+      } 
 
+      //COLOR FILL SELECTED 1
+      if (x >= 526 && x <= 565 && y >= 95 && y <= 130) colorFill = 1;
+      //COLOR FILL SELECTED 2     
+      if (x >= 568 && x <= 620 && y >= 95 && y <= 130) colorFill = 2;
+
+      //COLOR PICKER 
+      if (x >= 526 && x <= 794 && y >= 30 && y <= 90) {
+        printf("%s\n", "test");
+        mouseHide(x, y);
+        tempColor = getPixel(x, y);
+        if (colorFill == 1) {
+          paintColorPickerOne(tempColor);
+        }
+        else {
+          paintColorPickerTwo(tempColor);
+        }
+        mouseShow(x, y);
+      }
+
+      
       if (button != selectedBtn) {
         mouseHide(x, y);
         selectedBtn = button;

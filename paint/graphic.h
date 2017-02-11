@@ -45,7 +45,7 @@ void setPage(char page){
     CMP[currentPage], AL
     JE dontChangePage
     MOV [currentPage], AL
-    MOV AX, 4F05H
+    MOV AX, 4F05H   //read window
     XOR BX, BX 
     XOR DX, DX
     MOV DL, [page]
