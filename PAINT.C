@@ -25,7 +25,7 @@ void main() {
   int x, y, clicked, xtemp, ytemp;
   int button, selectedBtn, tempColor, actualColor1, actualColor2;
   int actualWidth;
-  int radio;
+  int radio, radiox, radioy;
   int x1, y1, tempx, tempy;
   int selectedWidth, colorFill; //select width of line
   BITMAP bitmap;
@@ -46,10 +46,9 @@ void main() {
   paintPalette(FULL_PALETTE);
   colorFill = 1;    //initialize selected color pane
   actualColor1 = 0;  //initialize paint color
-  actualColor2 = 255; //initialize paint color
-  actualWidth = 1;  //initialize width
-
-
+  actualColor2 = 15; //initialize paint color
+  actualWidth = 5;  //initialize width
+  paintEllipse(300, 300, 5, 20, actualColor1, actualColor2, actualWidth);
   while (1) {
     repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
 
@@ -64,9 +63,13 @@ void main() {
       if (x >= 326 && x <= 363 && y >= 82 && y <= 118) {
         button = RECTANGLE;
       } 
-
+      //CIRCLE CLICKED
       if (x >= 326 && x <= 363 && y >= 48 && y <= 81) {
         button = CIRCLE;
+      }
+      //ELLIPSE CLICKED
+      if (x >= 364 && x <= 430 && y >= 82 && y <= 118) {
+        button = ELLIPSE;
       }
 
 
@@ -147,6 +150,18 @@ void main() {
             }
             mouseHide(x, y);
             drawCircle(x1, y1, radio, actualColor1, actualWidth);
+            mouseShow(x, y);
+            break;
+          case ELLIPSE:
+            x1 = x;
+            y1 = y;
+            while (clicked == 1) {
+              radiox = fabs(x - x1);
+              radioy = fabs(y - y1);
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+            }
+            mouseHide(x, y);
+            drawEllipse(x1, y1, radiox, radioy, actualColor1, actualWidth);
             mouseShow(x, y);
             break;
         }

@@ -9,6 +9,8 @@
 int forceDraw = 0;
 int tmp;
 
+void ellipse(float xc, float yc, float x, float y, int color, int width);
+
 int ipart_(X) {
   return ((int)(X));
 }
@@ -258,4 +260,79 @@ void paintCircle(int x0, int y0, int radius, int outerColor, int innerColor, int
         }
     }
     drawCircle(x0, y0, radius, outerColor, width);
+}
+//mid point for ellipse
+void drawEllipse(float xc, float yc, float rx, float ry, int color, int width) {
+  float rxSq = rx * rx;
+  float rySq = ry * ry;
+  float x = 0, y = ry, p;
+  float px = 0, py = 2 * rxSq * y;
+
+  ellipse(xc, yc, x, y, color, width);
+
+  //Region 1
+  p = rySq - (rxSq * ry) + (0.25 * rxSq);
+  while (px < py) {
+      x++;
+      px = px + 2 * rySq;
+      if (p < 0)
+          p = p + rySq + px;
+      else {
+          y--;
+          py = py - 2 * rxSq;
+          p = p + rySq + px - py;
+      }
+      ellipse(xc, yc, x, y, color, width);
+  }
+
+  //Region 2
+  p = rySq*(x+0.5)*(x+0.5) + rxSq*(y-1)*(y-1) - rxSq*rySq;
+  while (y > 0) {
+      y--;
+      py = py - 2 * rxSq;
+      if (p > 0) {
+          p = p + rxSq - py;
+      }
+      else {
+          x++;
+          px = px + 2 * rySq;
+          p = p + rxSq - py + px;
+      }
+      ellipse(xc, yc, x, y, color, width);
+  }
+}
+//http://tutsheap.com/c/mid-point-ellipse-drawing-algorithm/
+void ellipse(float xc, float yc, float x, float y, int color, int width) {
+  putPixelWidth(xc + x, yc + y, color, width);
+  putPixelWidth(xc - x, yc + y, color, width);
+  putPixelWidth(xc + x, yc - y, color, width);
+  putPixelWidth(xc - x, yc - y, color, width);
+}
+
+void paintEllipse(int x0, int y0, int rx, int ry, int outerColor, char innerColor, int width){
+  short xmi, xma, ymi, yma, xw;
+  short x, y, xm, ym;
+  float d;
+
+  ymi = y0-ry;
+  yma = y0+ry;
+  if (ymi < 0)  
+    ymi = 0;
+  if (yma >= 600) 
+    yma = 599;
+  for (y=ymi; y <= yma; y++) {
+    d = (y-y0)/(ry+0.4);
+    xw = sqrt(1.0 - d * d) * (rx+ 0.4);
+    xmi = x0 - xw;
+    xma = x0 + xw;
+    if (xmi < 0)  
+      xmi = 0;
+    if (xma >= 800) 
+      xma = 800-1;
+    if (xma>=xmi){
+      drawLine(xmi, y, xma, y, innerColor, 1);
+    }
+  }
+  drawEllipse(x0,y0, rx, ry, outerColor, width);
+
 }
