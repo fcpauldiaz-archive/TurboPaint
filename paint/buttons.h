@@ -1,18 +1,18 @@
 #define FULL_PALETTE 0 //0 false y 1 true
 #define LINE 1        //check
 #define RECTANGLE 2  
-#define CIRCLE 3  
-#define CIRCLE_FILL 4
-#define ELLIPSE 5
-#define ELLIPSE_FILL 6
-#define PENCIL 7   
-#define RECTANGLE_FILL 8
+#define PAINT_RECTANGLE 3
+#define CIRCLE 4  
+#define PAINT_CIRCLE 5
+#define ELLIPSE 6
+#define PAINT_ELLIPSE 7 
+#define PENCIL 8
 #define BUCKET 9
 #define SPRAY 10
 #define ERASER 11
 #define TEXT 12
 #define POLYGON 13
-#define POLYGON_FILL 14
+#define PAINT_POLYGON 14
 #define DROPPER 15
 #define SAVE 16
 #define LOAD 17

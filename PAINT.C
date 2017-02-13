@@ -25,7 +25,7 @@ void main() {
   int x, y, clicked, xtemp, ytemp;
   int button, selectedBtn, tempColor, actualColor1, actualColor2;
   int actualWidth;
-  int radio, radiox, radioy;
+  int radio, rdX, rdY;
   int x1, y1, tempx, tempy;
   int selectedWidth, colorFill; //select width of line
   BITMAP bitmap;
@@ -45,10 +45,9 @@ void main() {
   //paintCanvas();
   paintPalette(FULL_PALETTE);
   colorFill = 1;    //initialize selected color pane
-  actualColor1 = 0;  //initialize paint color
-  actualColor2 = 15; //initialize paint color
-  actualWidth = 5;  //initialize width
-  paintEllipse(300, 300, 5, 20, actualColor1, actualColor2, actualWidth);
+  actualColor1 = COLOR_FILL_1;  //initialize paint color
+  actualColor2 = COLOR_FILL_2; //initialize paint color
+  actualWidth = 1;  //initialize width
   while (1) {
     repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
 
@@ -72,6 +71,23 @@ void main() {
         button = ELLIPSE;
       }
 
+      //CIRCLE PAINT
+      if (x >= 432 && x <= 472 && y >= 41 && y <= 82) {
+        button = PAINT_CIRCLE;
+      }
+      //RECTANGLE PAINT
+      if (x >= 431 && x <= 472 && y >= 83 && y <= 117) {
+        button = PAINT_RECTANGLE;
+      }
+      //OVAL PAINT
+      if (x >= 473 && x <= 529 && y >= 41 && y <= 82) {
+        button = PAINT_ELLIPSE;
+      }
+      //STAR PAINT
+      if (x >= 473 && x <= 529 && y >= 83 && y <= 117) {
+        button = PAINT_POLYGON;
+      }
+      
 
       //COLOR FILL SELECTED 1
       if (x >= 526 && x <= 565 && y >= 95 && y <= 130) colorFill = 1;
@@ -156,12 +172,57 @@ void main() {
             x1 = x;
             y1 = y;
             while (clicked == 1) {
-              radiox = fabs(x - x1);
-              radioy = fabs(y - y1);
+              rdX = fabs(x - x1);
+              rdY = fabs(y - y1);
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
             }
             mouseHide(x, y);
-            drawEllipse(x1, y1, radiox, radioy, actualColor1, actualWidth);
+            drawEllipse(x1, y1, rdX, rdY, actualColor1, actualWidth);
+            mouseShow(x, y);
+            break;
+          case PAINT_RECTANGLE:
+            x1 = x; y1 = y;
+            while (clicked == 1) {
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+            }
+            mouseHide(x, y);
+            paintRectangle(x1, y1, x, y, actualColor1, actualColor2, actualWidth);
+            mouseShow(x, y);
+            break;
+          case PAINT_CIRCLE:
+            x1 = x;
+            y1 = y;
+            while (clicked == 1) {
+              radio = sqrt(pow(x-x1, 2) + pow(y-y1, 2));
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+            }
+            radio = radio/2;
+            if (x1 < x ) {
+              x1 = x1 + radio;
+            }
+            if (x1 > x)  {
+              x1 = x1 - radio;
+            }
+            if (y1 < y ) {
+              y1 = y1 + radio;
+            }
+            if (y1 > y ) {
+              y1 = y - radio;
+            }
+            mouseHide(x, y);
+            paintCircle(x1, y1, radio, actualColor1, actualColor2, actualWidth);
+            mouseShow(x, y);
+            break;
+          case PAINT_ELLIPSE:
+            x1 = x;
+            y1 = y;
+            while (clicked == 1) {
+              rdX = fabs(x - x1);
+              rdY = fabs(y - y1);
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+            }
+            mouseHide(x, y);
+            paintEllipse(x1, y1, rdX, rdY, actualColor1, actualColor2, actualWidth);
             mouseShow(x, y);
             break;
         }
