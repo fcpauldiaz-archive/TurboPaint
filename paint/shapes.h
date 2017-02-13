@@ -6,7 +6,6 @@
 #define x2_Draw 800
 #define y2_Draw 600
 
-int forceDraw = 0;
 int tmp;
 
 void ellipse(float xc, float yc, float x, float y, int color, int width);
@@ -53,7 +52,7 @@ void draw_line_antialias(
   double dy = (double)y2 - (double)y1;
   int steep = fabs(dy) > fabs(dx);
   double gradient, intery;
-  int xend, yend, xgap, xpxl1, ypxl1, xpxl2, ypxl2;
+  int xend, yend, xpxl1, ypxl1, xpxl2, ypxl2;
   int x;
   if (steep) {
     tmp = x1; x1 = y1; y1 = tmp; 
@@ -71,7 +70,6 @@ void draw_line_antialias(
   }
   xend = round_(x1);
   yend = y1 + gradient * (xend - x1);
-  xgap = rfpart_(x1 + 0.5);
   xpxl1 = xend;
   ypxl1 = ipart_(yend);
   if (steep) {
@@ -85,7 +83,6 @@ void draw_line_antialias(
   intery = yend + gradient;
   xend = round_(x2);
   yend = y2 + gradient * (xend - x2);
-  xgap = fpart_(x2 + 0.5);
   xpxl2 = xend; //this will be used in the main loop
   ypxl2 = ipart_(yend);
   if (steep) {
@@ -124,8 +121,6 @@ void drawLine(int x1, int y1, int x2, int y2, int color, int width) {
   int dy = y2 - y1;
   float steps;
   //decides direction to paint
-  sdx = sign(dx);
-  sdy = sign(dy);
 
   x = fabs(dy)/2.0;
   y = fabs(dx)/2.0; 
@@ -190,6 +185,7 @@ void drawCircle(int x0, int y0, int radius, int color, int width) {
   int err = 0;
 
   while (x >= y) {
+    if (y0 + y >= 140 && y0 + x >= 140 && y0 - y >= 140 && y0 - x >= 140) {
       putPixelWidth(x0 + x, y0 + y, color, width);
       putPixelWidth(x0 + y, y0 + x, color, width);
       putPixelWidth(x0 - y, y0 + x, color, width);
@@ -198,15 +194,15 @@ void drawCircle(int x0, int y0, int radius, int color, int width) {
       putPixelWidth(x0 - y, y0 - x, color, width);
       putPixelWidth(x0 + y, y0 - x, color, width);
       putPixelWidth(x0 + x, y0 - y, color, width);
-
-      if (err <= 0) {
-          y = y + 1;
-          err += 2*y + 1;
-      }
-      if (err > 0) {
-          x = x - 1;
-          err -= 2*x + 1;
-      }
+    }
+    if (err <= 0) {
+        y = y + 1;
+        err += 2*y + 1;
+    }
+    if (err > 0) {
+        x = x - 1;
+        err -= 2*x + 1;
+    }
   }
 }
 
@@ -242,12 +238,16 @@ void paintCircle(int x0, int y0, int radius, int outerColor, int innerColor, int
 
     while (x >= y) {
         for (i = x0 - x; i <= x0 + x; i++) {
+          if (y0 + y >= 140 && y0 - y >= 140) {
             putPixel(i, y0 + y, innerColor);
             putPixel(i, y0 - y, innerColor);
+          }
         }
         for (i = x0 - y; i <= x0 + y; i++) {
+          if (y0 + x >= 140 && y0 - x >= 140) {
             putPixel(i, y0 + x, innerColor);
             putPixel(i, y0 - x, innerColor);
+          }
         }
 
         y++;
@@ -305,34 +305,36 @@ void drawEllipse(float xc, float yc, float rx, float ry, int color, int width) {
 void ellipse(float xc, float yc, float x, float y, int color, int width) {
   putPixelWidth(xc + x, yc + y, color, width);
   putPixelWidth(xc - x, yc + y, color, width);
+  if (yc - y <= 140) return; //validate tools
   putPixelWidth(xc + x, yc - y, color, width);
   putPixelWidth(xc - x, yc - y, color, width);
 }
 
-void paintEllipse(int x0, int y0, int rx, int ry, int outerColor, char innerColor, int width){
-  short xmi, xma, ymi, yma, xw;
-  short x, y, xm, ym;
+void paintEllipse(int x0, int y0, int radiousX, int radiousY, int outerColor, char innerColor, int width) {
+  short x_min_limit, x_max_limit, y_min_limit, y_max_limit;
+  short sqr;
+  short x, y;
   float d;
 
-  ymi = y0-ry;
-  yma = y0+ry;
-  if (ymi < 0)  
-    ymi = 0;
-  if (yma >= 600) 
-    yma = 599;
-  for (y=ymi; y <= yma; y++) {
-    d = (y-y0)/(ry+0.4);
-    xw = sqrt(1.0 - d * d) * (rx+ 0.4);
-    xmi = x0 - xw;
-    xma = x0 + xw;
-    if (xmi < 0)  
-      xmi = 0;
-    if (xma >= 800) 
-      xma = 800-1;
-    if (xma>=xmi){
-      drawLine(xmi, y, xma, y, innerColor, 1);
+  y_min_limit = y0-radiousY;
+  y_max_limit = y0+radiousY;
+  if (y_min_limit < 140)  
+    y_min_limit = 140;
+  if (y_max_limit >= 600) 
+    y_max_limit = 599;
+  for (y=y_min_limit; y <= y_max_limit; y++) {
+    d = (y-y0)/(radiousY+0.4);
+    sqr = sqrt(1.0 - d * d) * (radiousX+ 0.5);
+    x_min_limit = x0 - sqr;
+    x_max_limit = x0 + sqr;
+    if (x_min_limit < 0)  
+      x_min_limit = 0;
+    if (x_max_limit >= 800) 
+      x_max_limit = 800-1;
+    if (x_max_limit>=x_min_limit){
+      drawLine(x_min_limit, y, x_max_limit, y, innerColor, 1);
     }
   }
-  drawEllipse(x0,y0, rx, ry, outerColor, width);
+  drawEllipse(x0,y0, radiousX, radiousY, outerColor, width);
 
 }

@@ -7,6 +7,7 @@
 long resolY, resolX;
 long screenX, screenY, numberOfPages;
 char currentPage;
+int forceDraw = 0;
 
 int SVGA(int mode, long w, long h){
   resolY = h;
