@@ -28,5 +28,5 @@
 #define COLORS_Y1 29
 #define COLORS_Y2 89
 
-#define COLOR_FILL_1 15
+#define COLOR_FILL_1 0
 #define COLOR_FILL_2 255

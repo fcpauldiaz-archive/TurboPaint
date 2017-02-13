@@ -9,7 +9,6 @@
 int forceDraw = 0;
 int tmp;
 
-
 int ipart_(X) {
   return ((int)(X));
 }
@@ -181,4 +180,82 @@ void paintRectangle(int x1, int y1, int x2, int y2, int outerColor, int innerCol
   }
   drawRectangle(x1, y1, x2, y2, outerColor, width);
 }
+//mid point algorithim
+//https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+void drawCircle(int x0, int y0, int radius, int color, int width) {
+  int x = radius;
+  int y = 0;
+  int err = 0;
 
+  while (x >= y) {
+      putPixelWidth(x0 + x, y0 + y, color, width);
+      putPixelWidth(x0 + y, y0 + x, color, width);
+      putPixelWidth(x0 - y, y0 + x, color, width);
+      putPixelWidth(x0 - x, y0 + y, color, width);
+      putPixelWidth(x0 - x, y0 - y, color, width);
+      putPixelWidth(x0 - y, y0 - x, color, width);
+      putPixelWidth(x0 + y, y0 - x, color, width);
+      putPixelWidth(x0 + x, y0 - y, color, width);
+
+      if (err <= 0) {
+          y = y + 1;
+          err += 2*y + 1;
+      }
+      if (err > 0) {
+          x = x - 1;
+          err -= 2*x + 1;
+      }
+  }
+}
+
+//Unaccurate paint circle algorithim
+/*
+void paintCircle(int x0, int y0, int radius, int color) {
+  int x = radius;
+  int y = 0;
+  int err = 0;
+
+  while (x >= y) {
+      drawLine(x0 + y, y0 + x, x0 - y, y0 + x, color, 1);
+      drawLine(x0 - x, y0 + y, x0 + x, y0 + y, color, 1);
+      drawLine(x0 - y, y0 - x, x0 + y, y0 - x, color, 1);
+      drawLine(x0 + x, y0 - y, x0 - x, y0 - y, color, 1);
+      if (err <= 0) {
+          y = y + 1;
+          err += 2*y + 1;
+      }
+      if (err > 0) {
+          x = x - 1;
+          err -= 2*x + 1;
+      }
+  }
+}*/
+void paintCircle(int x0, int y0, int radius, int outerColor, int innerColor, int width) {
+    int i;
+    int x = radius-1;
+    int y = 0;
+    int xChange = 1 - (radius << 1);
+    int yChange = 0;
+    int radiusError = 0;
+
+    while (x >= y) {
+        for (i = x0 - x; i <= x0 + x; i++) {
+            putPixel(i, y0 + y, innerColor);
+            putPixel(i, y0 - y, innerColor);
+        }
+        for (i = x0 - y; i <= x0 + y; i++) {
+            putPixel(i, y0 + x, innerColor);
+            putPixel(i, y0 - x, innerColor);
+        }
+
+        y++;
+        radiusError += yChange;
+        yChange += 2;
+        if (((radiusError << 1) + xChange) > 0) {
+            x--;
+            radiusError += xChange;
+            xChange += 2;
+        }
+    }
+    drawCircle(x0, y0, radius, outerColor, width);
+}

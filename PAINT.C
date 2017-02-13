@@ -23,7 +23,9 @@
 
 void main() {
   int x, y, clicked, xtemp, ytemp;
-  int button, selectedBtn, tempColor;
+  int button, selectedBtn, tempColor, actualColor1, actualColor2;
+  int actualWidth;
+  int radio;
   int x1, y1, tempx, tempy;
   int selectedWidth, colorFill; //select width of line
   BITMAP bitmap;
@@ -38,11 +40,15 @@ void main() {
   validateMouse(MAX_X, MAX_Y);
   getMouse(&x, &y, &clicked);
 
-  openBMP(0, 0, "paint/pfondo.bmp",&bitmap);
+  openBMP(0, 0, "paint/pfondo.bmp", &bitmap);
   clicked = 0;
   //paintCanvas();
   paintPalette(FULL_PALETTE);
-  colorFill = 1;
+  colorFill = 1;    //initialize selected color pane
+  actualColor1 = 0;  //initialize paint color
+  actualColor2 = 255; //initialize paint color
+  actualWidth = 1;  //initialize width
+
 
   while (1) {
     repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
@@ -59,6 +65,11 @@ void main() {
         button = RECTANGLE;
       } 
 
+      if (x >= 326 && x <= 363 && y >= 48 && y <= 81) {
+        button = CIRCLE;
+      }
+
+
       //COLOR FILL SELECTED 1
       if (x >= 526 && x <= 565 && y >= 95 && y <= 130) colorFill = 1;
       //COLOR FILL SELECTED 2     
@@ -66,13 +77,14 @@ void main() {
 
       //COLOR PICKER 
       if (x >= 526 && x <= 794 && y >= 30 && y <= 90) {
-        printf("%s\n", "test");
         mouseHide(x, y);
         tempColor = getPixel(x, y);
         if (colorFill == 1) {
+          actualColor1 = tempColor;
           paintColorPickerOne(tempColor);
         }
         else {
+          actualColor2 = tempColor;
           paintColorPickerTwo(tempColor);
         }
         mouseShow(x, y);
@@ -99,7 +111,7 @@ void main() {
               //drawLine(x1, y1, x, y, -1, 5);
             }
             mouseHide(x, y);
-            drawLine(x1,y1,x,y, 12, 5);
+            drawLine(x1,y1,x,y, actualColor1, actualWidth);
             mouseShow(x, y);
             x1 = x; y1 = y; 
             break;
@@ -110,7 +122,31 @@ void main() {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
             }
             mouseHide(x, y);
-            drawRectangle(x1, y1, x, y, 180, 5);
+            drawRectangle(x1, y1, x, y, actualColor1, actualWidth);
+            mouseShow(x, y);
+            break;
+          case CIRCLE:
+            x1 = x;
+            y1 = y;
+            while (clicked == 1) {
+              radio = sqrt(pow(x-x1, 2) + pow(y-y1, 2));
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+            }
+            radio = radio/2;
+            if (x1 < x ) {
+              x1 = x1 + radio;
+            }
+            if (x1 > x)  {
+              x1 = x1 - radio;
+            }
+            if (y1 < y ) {
+              y1 = y1 + radio;
+            }
+            if (y1 > y ) {
+              y1 = y - radio;
+            }
+            mouseHide(x, y);
+            drawCircle(x1, y1, radio, actualColor1, actualWidth);
             mouseShow(x, y);
             break;
         }
