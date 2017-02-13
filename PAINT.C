@@ -26,7 +26,7 @@ void main() {
   int button, selectedBtn, tempColor, actualColor1, actualColor2;
   int actualWidth;
   int radio, rdX, rdY;
-  int x1, y1, tempx, tempy;
+  int x1, y1, x2, y2, tempx, tempy;
   int selectedWidth, colorFill; //select width of line
   BITMAP bitmap;
   //el primer parametro es el modo
@@ -69,6 +69,10 @@ void main() {
       //ELLIPSE CLICKED
       if (x >= 364 && x <= 430 && y >= 82 && y <= 118) {
         button = ELLIPSE;
+      }
+      //START
+      if (x >= 392 && x <= 430 && y >= 48 && y <= 81) {
+        button = POLYGON;
       }
 
       //CIRCLE PAINT
@@ -224,6 +228,27 @@ void main() {
             mouseHide(x, y);
             paintEllipse(x1, y1, rdX, rdY, actualColor1, actualColor2, actualWidth);
             mouseShow(x, y);
+            break;
+          case POLYGON:
+            x1 = x; y1 = y;
+            x2 = x; y2 = y;
+            while(clicked != 2) {
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+              while(clicked !=1 && clicked !=2 ) { 
+                repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+              }
+              if(clicked == 1) {
+                mouseHide(x, y);
+                drawLine(x1, y1, x, y, actualColor1, actualWidth);
+                mouseShow(x, y);
+              }else{
+                mouseHide(x, y);
+                drawLine(x2, y2, x1, y1, actualColor1, actualWidth);
+                mouseShow(x, y);
+              }
+              x1 = x;
+              y1 = y;
+            }
             break;
         }
       }
