@@ -186,12 +186,16 @@ void drawCircle(int x0, int y0, int radius, int color, int width) {
 
   while (x >= y) {
     if (y0 + y >= 140 && y0 + x >= 140 && y0 - y >= 140 && y0 - x >= 140) {
+      //paints the bottom rigth corner
       putPixelWidth(x0 + x, y0 + y, color, width);
       putPixelWidth(x0 + y, y0 + x, color, width);
+      //paints the bottom left corner
       putPixelWidth(x0 - y, y0 + x, color, width);
       putPixelWidth(x0 - x, y0 + y, color, width);
+      //paints the upper left corner
       putPixelWidth(x0 - x, y0 - y, color, width);
       putPixelWidth(x0 - y, y0 - x, color, width);
+      //paints the upper right corner
       putPixelWidth(x0 + y, y0 - x, color, width);
       putPixelWidth(x0 + x, y0 - y, color, width);
     }
@@ -237,12 +241,14 @@ void paintCircle(int x0, int y0, int radius, int outerColor, int innerColor, int
     int radiusError = 0;
 
     while (x >= y) {
+        //inner part
         for (i = x0 - x; i <= x0 + x; i++) {
           if (y0 + y >= 140 && y0 - y >= 140) {
             putPixel(i, y0 + y, innerColor);
             putPixel(i, y0 - y, innerColor);
           }
         }
+        //outer part
         for (i = x0 - y; i <= x0 + y; i++) {
           if (y0 + x >= 140 && y0 - x >= 140) {
             putPixel(i, y0 + x, innerColor);
@@ -270,7 +276,7 @@ void drawEllipse(float xc, float yc, float rx, float ry, int color, int width) {
 
   ellipse(xc, yc, x, y, color, width);
 
-  //Region 1
+  //Region 1, esquinas sup, infr.
   p = rySq - (rxSq * ry) + (0.25 * rxSq);
   while (px < py) {
       x++;
@@ -285,7 +291,7 @@ void drawEllipse(float xc, float yc, float rx, float ry, int color, int width) {
       ellipse(xc, yc, x, y, color, width);
   }
 
-  //Region 2
+  //Region 2,  2 esquinas izq, der
   p = rySq*(x+0.5)*(x+0.5) + rxSq*(y-1)*(y-1) - rxSq*rySq;
   while (y > 0) {
       y--;
@@ -303,11 +309,13 @@ void drawEllipse(float xc, float yc, float rx, float ry, int color, int width) {
 }
 //http://tutsheap.com/c/mid-point-ellipse-drawing-algorithm/
 void ellipse(float xc, float yc, float x, float y, int color, int width) {
-  putPixelWidth(xc + x, yc + y, color, width);
-  putPixelWidth(xc - x, yc + y, color, width);
+  //parte de abajo
+  putPixelWidth(xc + x, yc + y, color, width); //der
+  putPixelWidth(xc - x, yc + y, color, width); //izq
   if (yc - y <= 140) return; //validate tools
-  putPixelWidth(xc + x, yc - y, color, width);
-  putPixelWidth(xc - x, yc - y, color, width);
+  //parte de arriba
+  putPixelWidth(xc + x, yc - y, color, width);  //der
+  putPixelWidth(xc - x, yc - y, color, width); //izq
 }
 
 void paintEllipse(int x0, int y0, int radiousX, int radiousY, int outerColor, char innerColor, int width) {
@@ -321,17 +329,17 @@ void paintEllipse(int x0, int y0, int radiousX, int radiousY, int outerColor, ch
   if (y_min_limit < 140)  
     y_min_limit = 140;
   if (y_max_limit >= 600) 
-    y_max_limit = 599;
+    y_max_limit = 600;
   for (y=y_min_limit; y <= y_max_limit; y++) {
-    d = (y-y0)/(radiousY+0.4);
-    sqr = sqrt(1.0 - d * d) * (radiousX+ 0.5);
+    d = (y-y0)/(radiousY+0.5); // para que no sea cero
+    sqr = sqrt(1.0 - d * d) * (radiousX + 0.5);
     x_min_limit = x0 - sqr;
     x_max_limit = x0 + sqr;
     if (x_min_limit < 0)  
       x_min_limit = 0;
     if (x_max_limit >= 800) 
-      x_max_limit = 800-1;
-    if (x_max_limit>=x_min_limit){
+      x_max_limit = 800;
+    if (x_max_limit >= x_min_limit){
       drawLine(x_min_limit, y, x_max_limit, y, innerColor, 1);
     }
   }
