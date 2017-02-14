@@ -23,6 +23,13 @@
 #define UNDO 22
 #define SELECTED_COLOR 23
 
+//AVALIABLE WIDTHS
+#define WIDTH1 1
+#define WIDTH2 5
+#define WIDTH3 10
+#define WIDTH4 15
+
+//PALETTE LIMITS
 #define COLORS_X1 526
 #define COLORS_X2 794
 #define COLORS_Y1 29

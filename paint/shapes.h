@@ -268,6 +268,7 @@ void paintCircle(int x0, int y0, int radius, int outerColor, int innerColor, int
     drawCircle(x0, y0, radius, outerColor, width);
 }
 //mid point for ellipse
+//http://tutsheap.com/c/mid-point-ellipse-drawing-algorithm/
 void drawEllipse(float xc, float yc, float rx, float ry, int color, int width) {
   float rxSq = rx * rx;
   float rySq = ry * ry;

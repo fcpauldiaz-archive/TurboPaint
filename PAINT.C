@@ -92,6 +92,25 @@ void main() {
         button = PAINT_POLYGON;
       }
       
+      //width1
+      if (x >= 262 && x <= 314 && y >= 41 && y <= 61) actualWidth = WIDTH1;
+      //width 2
+      if (x >= 262 && x <= 314 && y >= 62 && y <= 80) actualWidth = WIDTH2;
+      //width 3
+      if (x >= 262 && x <= 314 && y >= 81 && y <= 99) actualWidth = WIDTH3;
+      //width 4
+      if (x >= 262 && x <= 314 && y >= 100 && y <= 120) actualWidth = WIDTH4;
+
+
+      //NEW
+      if (x >= 95 && x <= 123 && y >= 0 && y <= 25) {
+        paintCanvas();
+      }
+
+      //ERASER
+      if (x >= 54 && x <= 94 && y >= 32 && y <= 71) {
+        button = ERASER;
+      }
 
       //COLOR FILL SELECTED 1
       if (x >= 526 && x <= 565 && y >= 95 && y <= 130) colorFill = 1;
@@ -249,6 +268,17 @@ void main() {
               x1 = x;
               y1 = y;
             }
+            break;
+          case ERASER:
+            x1 = x;
+            y1 = y;
+            mouseHide(x, y);
+            while (clicked == 1 && y >= 140) {
+              drawLine(x, y, x1, y1, 255, actualWidth);
+              x1 = x; y1 = y;
+              getMouse(&x, &y, &clicked);
+            }
+            
             break;
         }
       }
