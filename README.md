@@ -2,6 +2,7 @@
 Paint in C and ASM
 
 Functions
+
 1. VESA (SVGA)
 
 2. CUT, COPY, PASTE
