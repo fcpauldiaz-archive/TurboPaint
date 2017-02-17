@@ -10,6 +10,8 @@
 #include <math.h>
 #include <time.h>
 
+#define MAX_VERTICES 100
+int vertex[MAX_VERTICES][2];
 
 #include "paint/graphic.h"
 #include "paint/mouse.h";
@@ -21,13 +23,16 @@
 #define MAX_X 800
 #define MAX_Y 600
 
+
 void main() {
-  int x, y, clicked, xtemp, ytemp;
+  int z, x, y, clicked, xtemp, ytemp, cont;
   int button, selectedBtn, tempColor, actualColor1, actualColor2;
   int actualWidth;
   int radio, rdX, rdY;
   int x1, y1, x2, y2, tempx, tempy;
+  
   int selectedWidth, colorFill; //select width of line
+  
   BITMAP bitmap;
   //el primer parametro es el modo
   //del registro BX
@@ -268,6 +273,42 @@ void main() {
               x1 = x;
               y1 = y;
             }
+            break;
+          case PAINT_POLYGON:
+            x1 = x; y1= y;
+            x2 = x; y2 = y;
+            cont = 0;
+            while (clicked != 2) {
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+              while(clicked != 1 && clicked != 2){
+                repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+              }
+             if(clicked == 1) {
+                mouseHide(x, y);
+                //cont is the vertex number
+                if (searchCoord(x, y) == 0) {
+                  vertex[cont][0] = x; //original position
+                  vertex[cont][1] = y; //original position
+                  cont++;
+                }
+                drawLine(x1, y1, x, y, 0, 1);
+                mouseShow(x, y);
+                
+              } else {
+                mouseHide(x, y);
+                if (searchCoord(x2, y2) == 0) {
+                  vertex[cont][0] = x2; //final position
+                  vertex[cont][1] = y2; //final position
+                }
+                drawLine(x2, y2, x1, y1, 0, 1);
+                mouseShow(x, y);
+              }
+              x1 = x;
+              y1 = y;
+            }
+            mouseHide(x, y);
+            scanLine(cont, actualColor1, actualWidth);
+            mouseShow(x, y);
             break;
           case ERASER:
             x1 = x;

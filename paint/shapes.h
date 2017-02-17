@@ -9,6 +9,7 @@
 int tmp;
 
 void ellipse(float xc, float yc, float x, float y, int color, int width);
+int searchCoord(int x1, int y2);
 
 int ipart_(X) {
   return ((int)(X));
@@ -346,4 +347,60 @@ void paintEllipse(int x0, int y0, int radiousX, int radiousY, int outerColor, ch
   }
   drawEllipse(x0,y0, radiousX, radiousY, outerColor, width);
 
+}
+
+// SCAN LINE ALGORITHM
+// http://code-heaven.blogspot.com/2009/10/simple-c-program-for-scan-line-polygon.html
+void scanLine(int cant_edges, int color, int width) {
+  int i,j,k,gd,gm,dy,dx;
+  int x,y,temp;
+  int xi[100];
+  float slope[20];
+
+  vertex[cant_edges][0] = vertex[0][0];
+  vertex[cant_edges][1] = vertex[0][1];
+
+  for(i=0; i < cant_edges; i++) {
+    dy = vertex[i+1][1] - vertex[i][1];
+    dx = vertex[i+1][0] - vertex[i][0];
+
+    if(dy==0) slope[i]=1.0;
+    if(dx==0) slope[i]=0.0;
+
+    if((dy!=0)&&(dx!=0)) { /*- calculate inverse slope -*/ 
+    slope[i]=(float) dx/dy;
+    }
+  }
+
+  for(y=0;y< 480;y++) {
+    k=0;
+    for(i=0; i < cant_edges; i++) {
+      if (((vertex[i][1] <= y) && (vertex[i+1][1]>y)) || ((vertex[i][1]>y) && (vertex[i+1][1]<=y))){
+        xi[k]=(int)(vertex[i][0]+slope[i]*(y-vertex[i][1]));
+        k++;
+      }
+    }
+    for(j=0; j<k-1; j++) { /*- Arrange x-intersections in order -*/
+      for(i=0; i<k-1; i++) {
+        if(xi[i] > xi[i+1]) {
+          temp=xi[i];
+          xi[i]=xi[i+1];
+          xi[i+1]=temp;
+          }
+      }
+    }
+    for(i=0; i < k;i+=2) {
+      drawLine(xi[i],y,xi[i+1]+1,y, color, width);
+    }
+  }
+}
+
+//search only for valid edges of polygon
+int searchCoord(int x1, int y1) {
+  int i ;
+  for (i = 0; i < MAX_VERTICES; i++) {
+    if (vertex[i][0] == x1 && vertex[i][1] == y1)
+      return 1;
+  }
+  return 0;
 }
