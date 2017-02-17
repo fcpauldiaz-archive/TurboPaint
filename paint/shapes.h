@@ -372,7 +372,7 @@ void scanLine(int cant_edges, int color, int width) {
     }
   }
 
-  for(y=0;y< 480;y++) {
+  for(y=0;y< MAX_Y;y++) {
     k=0;
     for(i=0; i < cant_edges; i++) {
       if (((vertex[i][1] <= y) && (vertex[i+1][1]>y)) || ((vertex[i][1]>y) && (vertex[i+1][1]<=y))){

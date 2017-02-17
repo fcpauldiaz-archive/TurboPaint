@@ -20,12 +20,11 @@ int vertex[MAX_VERTICES][2];
 #include "paint/shapes.h";
 #include "paint/palette.h";
 
-#define MAX_X 800
-#define MAX_Y 600
+
 
 
 void main() {
-  int z, x, y, clicked, xtemp, ytemp, cont;
+  int z, x, y, clicked, xtemp, ytemp, edgesCount;
   int button, selectedBtn, tempColor, actualColor1, actualColor2;
   int actualWidth;
   int radio, rdX, rdY;
@@ -277,7 +276,7 @@ void main() {
           case PAINT_POLYGON:
             x1 = x; y1= y;
             x2 = x; y2 = y;
-            cont = 0;
+            edgesCount = 0;
             while (clicked != 2) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
               while(clicked != 1 && clicked != 2){
@@ -285,11 +284,11 @@ void main() {
               }
              if(clicked == 1) {
                 mouseHide(x, y);
-                //cont is the vertex number
+                //edgesCount is the vertex number
                 if (searchCoord(x, y) == 0) {
-                  vertex[cont][0] = x; //original position
-                  vertex[cont][1] = y; //original position
-                  cont++;
+                  vertex[edgesCount][0] = x; //original position
+                  vertex[edgesCount][1] = y; //original position
+                  edgesCount++;
                 }
                 drawLine(x1, y1, x, y, 0, 1);
                 mouseShow(x, y);
@@ -297,8 +296,8 @@ void main() {
               } else {
                 mouseHide(x, y);
                 if (searchCoord(x2, y2) == 0) {
-                  vertex[cont][0] = x2; //final position
-                  vertex[cont][1] = y2; //final position
+                  vertex[edgesCount][0] = x2; //final position
+                  vertex[edgesCount][1] = y2; //final position
                 }
                 drawLine(x2, y2, x1, y1, 0, 1);
                 mouseShow(x, y);
@@ -307,7 +306,7 @@ void main() {
               y1 = y;
             }
             mouseHide(x, y);
-            scanLine(cont, actualColor1, actualWidth);
+            scanLine(edgesCount, actualColor2, actualWidth);
             mouseShow(x, y);
             break;
           case ERASER:
