@@ -290,7 +290,7 @@ void main() {
                   vertex[edgesCount][1] = y; //original position
                   edgesCount++;
                 }
-                drawLine(x1, y1, x, y, 0, 1);
+                drawLine(x1, y1, x, y, actualColor1, 1);
                 mouseShow(x, y);
                 
               } else {
@@ -299,7 +299,7 @@ void main() {
                   vertex[edgesCount][0] = x2; //final position
                   vertex[edgesCount][1] = y2; //final position
                 }
-                drawLine(x2, y2, x1, y1, 0, 1);
+                drawLine(x2, y2, x1, y1, actualColor1, 1);
                 mouseShow(x, y);
               }
               x1 = x;
