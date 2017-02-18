@@ -13,12 +13,13 @@
 #define MAX_VERTICES 100
 int vertex[MAX_VERTICES][2];
 
-#include "paint/graphic.h"
+#include "paint/graphic.h";
 #include "paint/mouse.h";
 #include "paint/bmpfiles.h";
 #include "paint/buttons.h";
 #include "paint/shapes.h";
 #include "paint/palette.h";
+#include "paint/tools.h";
 
 
 
@@ -107,7 +108,7 @@ void main() {
 
 
       //NEW
-      if (x >= 95 && x <= 123 && y >= 0 && y <= 25) {
+      if (x >= 94 && x <= 113 && y >= 0 && y <= 25) {
         paintCanvas();
       }
 
@@ -120,6 +121,9 @@ void main() {
       if (x >= 526 && x <= 565 && y >= 95 && y <= 130) colorFill = 1;
       //COLOR FILL SELECTED 2     
       if (x >= 568 && x <= 620 && y >= 95 && y <= 130) colorFill = 2;
+
+      //BUCKET FILL
+      if (x >= 2 && x <= 53 && y >= 32 && y <= 74) button = BUCKET;
 
       //COLOR PICKER 
       if (x >= 526 && x <= 794 && y >= 30 && y <= 90) {
@@ -319,6 +323,11 @@ void main() {
               getMouse(&x, &y, &clicked);
             }
             
+            break;
+          case BUCKET:
+            mouseHide(x, y);
+            bucket(x, y, actualColor1, 0);
+            mouseShow(x, y);
             break;
         }
       }
