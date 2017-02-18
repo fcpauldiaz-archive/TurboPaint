@@ -326,7 +326,7 @@ void main() {
             break;
           case BUCKET:
             mouseHide(x, y);
-            bucket(x, y, actualColor1, 0);
+            bucket(x, y, actualColor1, getPixel(x, y));
             mouseShow(x, y);
             break;
         }

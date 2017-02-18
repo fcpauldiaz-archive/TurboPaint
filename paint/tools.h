@@ -8,15 +8,9 @@ typedef struct node {
 
 void setNextNode(node_t ** next_node, int x, int y);
 
-void bucket(int x, int y, char fillColor, int pattern){
+void bucket(int x, int y, char fillColor, char clickColor){
   node_t *start, *nextNode, *remove;
-  char oldColor;
   int calcX, calcY;
-  oldColor = getPixel(x, y);
-
-  if (fillColor == oldColor){
-    return;
-  }
 
   //Node de inicio y final de la lista.
   start = (node_t*) malloc(sizeof(node_t));
@@ -30,25 +24,25 @@ void bucket(int x, int y, char fillColor, int pattern){
     putPixel(x, y, fillColor);
     //left
     calcX = x-1;
-    if (getPixel(calcX, y) == oldColor && (x > 0 && x < 800 && (calcY) > 140 && (calcY) < 600)) {
+    if (getPixel(calcX, y) == clickColor && (x > 0 && x < 800 && (calcY) > 140 && (calcY) < 600)) {
       putPixel(calcX, y, fillColor);
       setNextNode(&nextNode, calcX, y);
     }
     //up
     calcY = y+1;
-    if (getPixel(x, calcY) == oldColor && (x > 0 && x < 800 && (calcY) > 140 && (calcY) < 600)) {
+    if (getPixel(x, calcY) == clickColor && (x > 0 && x < 800 && (calcY) > 140 && (calcY) < 600)) {
       putPixel(x, calcY, fillColor);
       setNextNode(&nextNode, x, calcY);
     }
     //down
     calcY = y-1;
-    if(getPixel(x, calcY) == oldColor && (x>0 && x<800 && (calcY) > 140 && (calcY)<600)){
+    if(getPixel(x, calcY) == clickColor && (x>0 && x<800 && (calcY) > 140 && (calcY)<600)){
       putPixel(x, calcY, fillColor);
       setNextNode(&nextNode, x, calcY);
     }
     //right
     calcX = x+1;
-    if(getPixel(calcX, y) == oldColor && (x>0 && x<800 && (calcY)>140 && (calcY)<600)){
+    if(getPixel(calcX, y) == clickColor && (x>0 && x<800 && (calcY)>140 && (calcY)<600)){
       putPixel(calcX, y, fillColor);
       setNextNode(&nextNode, calcX, y);
     }
