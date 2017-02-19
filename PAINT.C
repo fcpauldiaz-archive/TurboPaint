@@ -103,6 +103,8 @@ void main() {
 
       //GET COLOR
       if (x >= 51 && x <= 100 && y >= 72 && y <= 120) button = PICKER;
+      //SPRAY TOOL
+      if (x >= 109 && x <= 143 && y >= 29 && y <= 82) button = SPRAY;
       
       //width1
       if (x >= 262 && x <= 314 && y >= 41 && y <= 61) actualWidth = WIDTH1;
@@ -361,6 +363,11 @@ void main() {
             paintColorPickerTwo(tempColor);
            }
            mouseShow(x, y);
+            break;
+          case SPRAY:
+            mouseHide(x, y);
+            paintSpray(x, y, actualColor1, actualWidth);
+            mouseShow(x, y);
             break;
         }
       }

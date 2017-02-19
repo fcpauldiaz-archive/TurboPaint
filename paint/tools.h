@@ -122,3 +122,9 @@ void setNextNode(node_t ** next_node, int x, int y) {
   (*next_node)->next = node;
   *next_node = (*next_node)->next;
 }
+
+
+//SPRAY TOOL
+void paintSpray(int x, int y, int color, int width) {
+  putPixel(x - rand()%width, y-rand()%width, color);
+}
