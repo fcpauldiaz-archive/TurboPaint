@@ -13,7 +13,7 @@
 #define TEXT 12
 #define POLYGON 13
 #define PAINT_POLYGON 14
-#define DROPPER 15
+#define PICKER 15
 #define SAVE 16
 #define LOAD 17
 #define NEW 18
@@ -39,3 +39,5 @@
 #define COLOR_FILL_2 255
 #define MAX_X 800
 #define MAX_Y 600
+
+#define PREVIEW_COLOR 7

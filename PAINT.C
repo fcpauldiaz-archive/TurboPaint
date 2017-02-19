@@ -43,7 +43,6 @@ void main() {
   
   initMouse();
   validateMouse(MAX_X, MAX_Y);
-  getMouse(&x, &y, &clicked);
 
   openBMP(0, 0, "paint/pfondo.bmp", &bitmap);
   clicked = 0;
@@ -96,6 +95,14 @@ void main() {
       if (x >= 473 && x <= 529 && y >= 83 && y <= 117) {
         button = PAINT_POLYGON;
       }
+
+      //PENCIL
+      if (x >= 2 && x <= 50 && y >= 75 && y <= 171) {
+        button = PENCIL;
+      }
+
+      //GET COLOR
+      if (x >= 51 && x <= 100 && y >= 72 && y <= 120) button = PICKER;
       
       //width1
       if (x >= 262 && x <= 314 && y >= 41 && y <= 61) actualWidth = WIDTH1;
@@ -312,22 +319,48 @@ void main() {
             mouseHide(x, y);
             scanLine(edgesCount, actualColor2, actualWidth);
             mouseShow(x, y);
+            xtemp = x; ytemp = y;
             break;
           case ERASER:
-            x1 = x;
-            y1 = y;
+            xtemp = x;
+            ytemp = y;
             mouseHide(x, y);
             while (clicked == 1 && y >= 140) {
-              drawLine(x, y, x1, y1, 255, actualWidth);
-              x1 = x; y1 = y;
+              drawLine(x, y, xtemp, ytemp, 255, actualWidth);
+              xtemp = x; ytemp = y;
               getMouse(&x, &y, &clicked);
             }
-            
+            mouseShow(x, y);
+            xtemp = x; ytemp = y;
             break;
           case BUCKET:
             mouseHide(x, y);
             bucket(x, y, actualColor1, getPixel(x, y));
             mouseShow(x, y);
+            break;
+          case PENCIL:
+            mouseHide(x, y);
+            x1 = x; y1 = y;
+            while(clicked == 1 && y >= 140) {
+              drawLine(x, y, x1, y1, actualColor1, actualWidth);
+              x1 = x; y1 = y;
+              getMouse(&x, &y, &clicked);
+            }
+            mouseShow(x, y);
+            xtemp = x; ytemp = y;
+            break;
+          case PICKER:
+           mouseHide(x, y);
+           tempColor = getPixel(x, y);
+           if (colorFill == 1) {
+            actualColor1 = tempColor;
+            paintColorPickerOne(tempColor);
+           }
+           else {
+            actualColor2 = tempColor;
+            paintColorPickerTwo(tempColor);
+           }
+           mouseShow(x, y);
             break;
         }
       }

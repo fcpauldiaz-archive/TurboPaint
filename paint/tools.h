@@ -8,18 +8,21 @@ typedef struct node {
 
 void setNextNode(node_t ** next_node, int x, int y);
 
+//bucket algorithim
+//Third try to implement
+//stack overflow problems
 void bucket(int x, int y, char fillColor, char clickColor){
-  node_t *start, *nextNode, *remove;
+  node_t *link, *nextNode, *remove;
   int calcX, calcY;
 
-  //Node de inicio y final de la lista.
-  start = (node_t*) malloc(sizeof(node_t));
-  start->val_x = x;
-  start->val_y = y;
-  start->next = NULL;
-  nextNode = start;
+  //node decl
+  link = (node_t*) malloc(sizeof(node_t));
+  link->val_x = x;
+  link->val_y = y;
+  link->next = NULL;
+  nextNode = link;
 
-  while(start != NULL) {
+  while(link != NULL) {
 
     putPixel(x, y, fillColor);
     //left
@@ -48,13 +51,13 @@ void bucket(int x, int y, char fillColor, char clickColor){
     }
     
     //remove element
-    remove=start;
-    start= start->next;
-    x=start->val_x;
-    y=start->val_y;
+    remove=link;
+    link= link->next;
+    x=link->val_x;
+    y=link->val_y;
     free(remove);
   }
-  free(start);
+  free(link);
 }
 
 
