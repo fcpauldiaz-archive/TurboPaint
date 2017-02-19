@@ -27,7 +27,7 @@ int vertex[MAX_VERTICES][2];
 void main() {
   int z, x, y, clicked, xtemp, ytemp, edgesCount;
   int button, selectedBtn, tempColor, actualColor1, actualColor2;
-  int actualWidth;
+  int actualWidth, actualPattern;
   int radio, rdX, rdY;
   int x1, y1, x2, y2, tempx, tempy;
   
@@ -52,6 +52,7 @@ void main() {
   actualColor1 = COLOR_FILL_1;  //initialize paint color
   actualColor2 = COLOR_FILL_2; //initialize paint color
   actualWidth = 1;  //initialize width
+  actualPattern = 0; //initialize pattern
   while (1) {
     repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
 
@@ -133,6 +134,13 @@ void main() {
 
       //BUCKET FILL
       if (x >= 2 && x <= 53 && y >= 32 && y <= 74) button = BUCKET;
+
+      //PATTERN 1
+      if (x >= 678 && x <= 710 && y >= 94 && y <= 130) actualPattern = 1;
+      //PATTERN 2
+      if (x >= 718 && x <= 756 && y >= 94 && y <= 130) actualPattern = 2;
+      //PATTERN 3
+      if (x >= 758 && x <= 795 && y >= 95 && y <= 130) actualPattern = 3;
 
       //COLOR PICKER 
       if (x >= 526 && x <= 794 && y >= 30 && y <= 90) {
@@ -337,7 +345,7 @@ void main() {
             break;
           case BUCKET:
             mouseHide(x, y);
-            bucket(x, y, actualColor1, getPixel(x, y));
+            bucket(x, y, actualColor1, getPixel(x, y), actualPattern);
             mouseShow(x, y);
             break;
           case PENCIL:

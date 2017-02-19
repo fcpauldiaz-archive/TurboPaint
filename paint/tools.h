@@ -11,7 +11,7 @@ void setNextNode(node_t ** next_node, int x, int y);
 //bucket algorithim
 //Third try to implement
 //stack overflow problems
-void bucket(int x, int y, char fillColor, char clickColor){
+void bucket(int x, int y, char fillColor, char clickColor, int pattern){
   node_t *link, *nextNode, *remove;
   int calcX, calcY;
 
@@ -24,28 +24,74 @@ void bucket(int x, int y, char fillColor, char clickColor){
 
   while(link != NULL) {
 
+    if (pattern == 1) {
+      fillColor = getPixel(678 + x%30, 95 + y%35);
+    } else if (pattern == 2) {
+      fillColor = getPixel(718 + x%30, 95 + y%35);
+    }
+    else if (pattern == 3) {
+      fillColor = getPixel(758 + x%37, 94 + y%36);
+    }
+
     putPixel(x, y, fillColor);
     //left
     calcX = x-1;
     if (getPixel(calcX, y) == clickColor && (x > 0 && x < 800 && (calcY) > 140 && (calcY) < 600)) {
+      if (pattern == 1) {
+        fillColor = getPixel(678 + x%30, 95 + y%35);
+      } else if (pattern == 2) {
+        fillColor = getPixel(718 + x%30, 95 + y%35);
+      }
+      else if (pattern == 3) {
+        fillColor = getPixel(758 + x%37, 94 + y%36);
+      }
+
+
       putPixel(calcX, y, fillColor);
       setNextNode(&nextNode, calcX, y);
     }
     //up
     calcY = y+1;
     if (getPixel(x, calcY) == clickColor && (x > 0 && x < 800 && (calcY) > 140 && (calcY) < 600)) {
+      if (pattern == 1) {
+        fillColor = getPixel(678 + x%30, 95 + y%35);
+      } else if (pattern == 2) {
+        fillColor = getPixel(718 + x%30, 95 + y%35);
+      }
+      else if (pattern == 3) {
+        fillColor = getPixel(758 + x%37, 94 + y%36);
+      }
+
       putPixel(x, calcY, fillColor);
       setNextNode(&nextNode, x, calcY);
     }
     //down
     calcY = y-1;
     if(getPixel(x, calcY) == clickColor && (x>0 && x<800 && (calcY) > 140 && (calcY)<600)){
+      if (pattern == 1) {
+        fillColor = getPixel(678 + x%30, 95 + y%35);
+      } else if (pattern == 2) {
+        fillColor = getPixel(718 + x%30, 95 + y%35);
+      }
+      else if (pattern == 3) {
+        fillColor = getPixel(758 + x%37, 94 + y%36);
+      }
+
       putPixel(x, calcY, fillColor);
       setNextNode(&nextNode, x, calcY);
     }
     //right
     calcX = x+1;
     if(getPixel(calcX, y) == clickColor && (x>0 && x<800 && (calcY)>140 && (calcY)<600)){
+      if (pattern == 1) {
+        fillColor = getPixel(678 + x%30, 95 + y%35);
+      } else if (pattern == 2) {
+        fillColor = getPixel(718 + x%30, 95 + y%35);
+      }
+      else if (pattern == 3) {
+        fillColor = getPixel(758 + x%37, 94 + y%36);
+      }
+
       putPixel(calcX, y, fillColor);
       setNextNode(&nextNode, calcX, y);
     }
