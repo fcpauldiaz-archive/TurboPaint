@@ -39,5 +39,3 @@
 #define COLOR_FILL_2 255
 #define MAX_X 800
 #define MAX_Y 600
-
-#define PREVIEW_COLOR 7

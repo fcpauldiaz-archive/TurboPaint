@@ -11,6 +11,8 @@ int tmp;
 void ellipse(float xc, float yc, float x, float y, int color, int width);
 int searchCoord(int x1, int y2);
 
+void savePixel(int x1, int y1, int x2, int y2, int width);
+
 int ipart_(X) {
   return ((int)(X));
 }
@@ -44,6 +46,7 @@ int sign(x) {
 void plot_(int x, int y, int color) {
   putPixelWidth(x, y, color, 15);
 }
+//NOT WORKING
 void draw_line_antialias(
   unsigned int x1, unsigned int y1,
   unsigned int x2, unsigned int y2,
@@ -151,6 +154,121 @@ void drawLine(int x1, int y1, int x2, int y2, int color, int width) {
     }
   }
 }
+
+//REPAINT THE PIXELS SAVED IN FILE
+//THIS BECOMES INNEFICIENT WITH MORE WIDTH LINE
+//https://www.tutorialspoint.com/computer_graphics/line_generation_algorithm.htm
+void reDrawLine(int x1, int y1, int x2, int y2, int width) {
+  int i, j, k;
+  int sdx, sdy, tcol;
+  float x, y;
+  float pixels_x,  pixels_y;
+  int dx = x2 - x1;
+  int dy = y2 - y1;
+  float steps;
+  char line[20];
+  int pixel;
+  FILE *file;
+  file = fopen("paint/pixels.txt", "r");
+
+  //decides direction to paint
+  tcol = 0;
+  x = fabs(dy)/2.0;
+  y = fabs(dx)/2.0; 
+
+  pixels_x = x1;
+  pixels_y = y1;
+  //difference from x is bigger
+  if (fabs(dx) >= fabs(dy)){
+    steps = fabs(dx);
+    x = dx/(float)steps;
+    y = dy/(float)steps;
+    for (i=0; i < steps; i++) {
+      pixels_x = pixels_x + x;
+      pixels_y = pixels_y + y;
+      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+         for (k = 0; k < width; k++) {
+          for ( j = 0; j < width; j++) {
+            sscanf(fgets(line,sizeof(line),file), "%i", &pixel);
+            putPixel((int)pixels_x + j, (int)pixels_y + k, pixel);
+            tcol = tcol + 1;
+          }
+        }
+    }
+  } else {
+    steps = fabs(dy);
+    x = dx/(float)steps;
+    y = dy/(float)steps;
+    for (i=0; i < steps; i++) {
+      pixels_x = pixels_x + x;
+      pixels_y = pixels_y + y;
+      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+      for (k = 0; k < width; k++) {
+          for ( j = 0; j < width; j++) {
+            sscanf(fgets(line,sizeof(line),file), "%i", &pixel);
+            putPixel((int)pixels_x + j, (int)pixels_y + k, pixel);
+            tcol = tcol + 1;
+          }
+        }
+    }
+  }
+  fclose(file);
+}
+
+void savePixel(int x1, int y1, int x2, int y2, int width) {
+  int i, j, k;
+  int sdx, sdy, tcol;
+  float x, y;
+  float pixels_x,  pixels_y;
+  int dx = x2 - x1;
+  int dy = y2 - y1;
+  float steps;
+  FILE *file;
+  tcol = 0;
+  //decides direction to paint
+  file = fopen("paint/pixels.txt","w");
+  x = fabs(dy)/2.0;
+  y = fabs(dx)/2.0; 
+
+  pixels_x = x1;
+  pixels_y = y1;
+  //difference from x is bigger
+  if (fabs(dx) >= fabs(dy)){
+    steps = fabs(dx);
+    x = dx/(float)steps;
+    y = dy/(float)steps;
+    for (i=0; i < steps; i++) {
+      pixels_x = pixels_x + x;
+      pixels_y = pixels_y + y;
+      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+        for (k = 0; k < width; k++) {
+          for ( j = 0; j < width; j++) {
+            fprintf(file, "%i\n", getPixel(pixels_x + j, pixels_y + k)); 
+            tcol = tcol + 1;
+          }
+        }
+
+    }
+  } else {
+    steps = fabs(dy);
+    x = dx/(float)steps;
+    y = dy/(float)steps;
+    for (i=0; i < steps; i++) {
+      pixels_x = pixels_x + x;
+      pixels_y = pixels_y + y;
+      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+        for (k = 0; k < width; k++) {
+          for ( j = 0; j < width; j++) {
+            fprintf(file, "%i\n", getPixel(pixels_x + j, pixels_y + k)); 
+            tcol = tcol + 1;
+          }
+        }
+    }
+  }
+  fclose(file);
+}
+
+
 
 //draw rectangle with no fill
 void drawRectangle(int x1, int y1, int x2, int y2, int color, int width) {

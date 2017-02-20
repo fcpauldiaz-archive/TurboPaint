@@ -20,6 +20,7 @@ int vertex[MAX_VERTICES][2];
 #include "paint/shapes.h";
 #include "paint/palette.h";
 #include "paint/tools.h";
+#include "paint/cpboard.h";
 
 
 
@@ -43,6 +44,7 @@ void main() {
   
   initMouse();
   validateMouse(MAX_X, MAX_Y);
+  getMouse(&x, &y, &clicked);
 
   openBMP(0, 0, "paint/pfondo.bmp", &bitmap);
   clicked = 0;
@@ -142,6 +144,7 @@ void main() {
       //PATTERN 3
       if (x >= 758 && x <= 795 && y >= 95 && y <= 130) actualPattern = 3;
 
+      if (x >= 224 && x <= 260 && y >= 81 && y <= 119) undo();
       //COLOR PICKER 
       if (x >= 526 && x <= 794 && y >= 30 && y <= 90) {
         mouseHide(x, y);
@@ -174,17 +177,23 @@ void main() {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
               //this could repaint the line in real time
               //but it ereases everything else
-              //drawLine(x1, y1, x, y, 128, 5);
-              //drawLine(x1, y1, x, y, -1, 5);
+              savePixel(x1, y1, x, y, actualWidth);
+              drawLine(x1, y1, x, y, actualColor1, actualWidth);
+              reDrawLine(x1, y1, x, y, actualWidth);
             }
             mouseHide(x, y);
             drawLine(x1,y1,x,y, actualColor1, actualWidth);
+            //delete file for animation
+            remove("paint/pixels.txt");
             mouseShow(x, y);
             x1 = x; y1 = y; 
             break;
           case RECTANGLE:
             x1 = x;
             y1 = y;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             while (clicked == 1) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
             }
@@ -345,7 +354,7 @@ void main() {
             break;
           case BUCKET:
             mouseHide(x, y);
-            bucket(x, y, actualColor1, getPixel(x, y), actualPattern);
+            bucket(x, y, actualColor2, getPixel(x, y), actualPattern);
             mouseShow(x, y);
             break;
           case PENCIL:
