@@ -25,12 +25,6 @@ void paintPalette(int full) {
   paintColorPickerOne(COLOR_FILL_1);
   paintColorPickerTwo(COLOR_FILL_2);
   forceDraw  = 0;
-  //re make undo file
-  remove("paint/undo.txt");
-  f = fopen("paint/undo.txt", "w");
-  fprintf(f, "%i", 7070);
-  fclose(f);
-
 }
 
 //PAINT FEW COLORS

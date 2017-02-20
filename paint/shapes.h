@@ -155,7 +155,7 @@ void drawLine(int x1, int y1, int x2, int y2, int color, int width) {
 //https://www.tutorialspoint.com/computer_graphics/line_generation_algorithm.htm
 void reDrawLine(int x1, int y1, int x2, int y2, int width) {
   int i, j, k;
-  int sdx, sdy, tcol;
+  int sdx, sdy;
   float x, y;
   float pixels_x,  pixels_y;
   int dx = x2 - x1;
@@ -167,7 +167,6 @@ void reDrawLine(int x1, int y1, int x2, int y2, int width) {
   file = fopen("paint/pixels.txt", "r");
 
   //decides direction to paint
-  tcol = 0;
   x = fabs(dy)/2.0;
   y = fabs(dx)/2.0; 
 

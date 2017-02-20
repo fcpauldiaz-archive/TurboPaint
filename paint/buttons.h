@@ -44,4 +44,4 @@
 #define x2_Draw 800
 #define y2_Draw 600
 
-#define ACTIVATE_UNDO 0
+#define ACTIVATE_UNDO 1

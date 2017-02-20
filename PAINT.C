@@ -12,7 +12,7 @@
 
 #define MAX_VERTICES 100
 int vertex[MAX_VERTICES][2];
-
+int undoCounter = 0;
 #include "paint/graphic.h";
 #include "paint/mouse.h";
 #include "paint/bmpfiles.h";
@@ -44,7 +44,6 @@ void main() {
   
   initMouse();
   validateMouse(MAX_X, MAX_Y);
-  getMouse(&x, &y, &clicked);
 
   openBMP(0, 0, "paint/pfondo.bmp", &bitmap);
   clicked = 0;
@@ -143,7 +142,7 @@ void main() {
       if (x >= 718 && x <= 756 && y >= 94 && y <= 130) actualPattern = 2;
       //PATTERN 3
       if (x >= 758 && x <= 795 && y >= 95 && y <= 130) actualPattern = 3;
-
+      //undo
       if (x >= 224 && x <= 260 && y >= 81 && y <= 119) undo();
       //COLOR PICKER 
       if (x >= 526 && x <= 794 && y >= 30 && y <= 90) {
