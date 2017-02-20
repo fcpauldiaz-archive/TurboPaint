@@ -172,6 +172,9 @@ void main() {
           case LINE:
             x1 = x;
             y1 = y;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             getMouse(&x,&y,&clicked);
             while(clicked==1) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
@@ -196,14 +199,21 @@ void main() {
             mouseShow(x, y);
             while (clicked == 1) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+              //savePixelRectangle(x1, y1, x, y, actualWidth);
+              //drawRectangle(x1, y1, x, y, actualColor1, actualWidth);
+              //reDrawRectangle(x1, y1, x, y, actualWidth);
             }
             mouseHide(x, y);
             drawRectangle(x1, y1, x, y, actualColor1, actualWidth);
+            //remove("paint/pixels.txt");
             mouseShow(x, y);
             break;
           case CIRCLE:
             x1 = x;
             y1 = y;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             while (clicked == 1) {
               radio = sqrt(pow(x-x1, 2) + pow(y-y1, 2));
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
@@ -228,6 +238,9 @@ void main() {
           case ELLIPSE:
             x1 = x;
             y1 = y;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             while (clicked == 1) {
               rdX = fabs(x - x1);
               rdY = fabs(y - y1);
@@ -239,6 +252,9 @@ void main() {
             break;
           case PAINT_RECTANGLE:
             x1 = x; y1 = y;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             while (clicked == 1) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
             }
@@ -249,6 +265,9 @@ void main() {
           case PAINT_CIRCLE:
             x1 = x;
             y1 = y;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             while (clicked == 1) {
               radio = sqrt(pow(x-x1, 2) + pow(y-y1, 2));
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
@@ -273,6 +292,9 @@ void main() {
           case PAINT_ELLIPSE:
             x1 = x;
             y1 = y;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             while (clicked == 1) {
               rdX = fabs(x - x1);
               rdY = fabs(y - y1);
@@ -285,6 +307,9 @@ void main() {
           case POLYGON:
             x1 = x; y1 = y;
             x2 = x; y2 = y;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             while(clicked != 2) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
               while(clicked !=1 && clicked !=2 ) { 
@@ -307,6 +332,9 @@ void main() {
             x1 = x; y1= y;
             x2 = x; y2 = y;
             edgesCount = 0;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             while (clicked != 2) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
               while(clicked != 1 && clicked != 2){
@@ -344,6 +372,7 @@ void main() {
             xtemp = x;
             ytemp = y;
             mouseHide(x, y);
+            saveUndo();
             while (clicked == 1 && y >= 140) {
               drawLine(x, y, xtemp, ytemp, 255, actualWidth);
               xtemp = x; ytemp = y;
@@ -354,11 +383,13 @@ void main() {
             break;
           case BUCKET:
             mouseHide(x, y);
+            saveUndo();
             bucket(x, y, actualColor2, getPixel(x, y), actualPattern);
             mouseShow(x, y);
             break;
           case PENCIL:
             mouseHide(x, y);
+            saveUndo();
             x1 = x; y1 = y;
             while(clicked == 1 && y >= 140) {
               drawLine(x, y, x1, y1, actualColor1, actualWidth);
@@ -383,6 +414,7 @@ void main() {
             break;
           case SPRAY:
             mouseHide(x, y);
+            saveUndo();
             paintSpray(x, y, actualColor1, actualWidth);
             mouseShow(x, y);
             break;

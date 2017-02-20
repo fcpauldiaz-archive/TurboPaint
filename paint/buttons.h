@@ -39,3 +39,9 @@
 #define COLOR_FILL_2 255
 #define MAX_X 800
 #define MAX_Y 600
+#define x1_Draw 0
+#define y1_Draw 140
+#define x2_Draw 800
+#define y2_Draw 600
+
+#define ACTIVATE_UNDO 0

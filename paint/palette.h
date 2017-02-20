@@ -14,6 +14,7 @@ void paintCanvas() {
 }
 //paints the available palette
 void paintPalette(int full) {
+  FILE *f;
   forceDraw = 1;
   if (full == 1) {
     paintFullPalette();
@@ -24,6 +25,12 @@ void paintPalette(int full) {
   paintColorPickerOne(COLOR_FILL_1);
   paintColorPickerTwo(COLOR_FILL_2);
   forceDraw  = 0;
+  //re make undo file
+  remove("paint/undo.txt");
+  f = fopen("paint/undo.txt", "w");
+  fprintf(f, "%i", 7070);
+  fclose(f);
+
 }
 
 //PAINT FEW COLORS

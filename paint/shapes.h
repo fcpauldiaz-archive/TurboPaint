@@ -1,11 +1,6 @@
 
 #include <time.h>
 
-#define x1_Draw 0
-#define y1_Draw 140
-#define x2_Draw 800
-#define y2_Draw 600
-
 int tmp;
 
 void ellipse(float xc, float yc, float x, float y, int color, int width);
@@ -191,7 +186,6 @@ void reDrawLine(int x1, int y1, int x2, int y2, int width) {
           for ( j = 0; j < width; j++) {
             sscanf(fgets(line,sizeof(line),file), "%i", &pixel);
             putPixel((int)pixels_x + j, (int)pixels_y + k, pixel);
-            tcol = tcol + 1;
           }
         }
     }
@@ -207,7 +201,6 @@ void reDrawLine(int x1, int y1, int x2, int y2, int width) {
           for ( j = 0; j < width; j++) {
             sscanf(fgets(line,sizeof(line),file), "%i", &pixel);
             putPixel((int)pixels_x + j, (int)pixels_y + k, pixel);
-            tcol = tcol + 1;
           }
         }
     }
@@ -217,14 +210,14 @@ void reDrawLine(int x1, int y1, int x2, int y2, int width) {
 
 void savePixel(int x1, int y1, int x2, int y2, int width) {
   int i, j, k;
-  int sdx, sdy, tcol;
+  int sdx, sdy;
   float x, y;
   float pixels_x,  pixels_y;
   int dx = x2 - x1;
   int dy = y2 - y1;
   float steps;
   FILE *file;
-  tcol = 0;
+
   //decides direction to paint
   file = fopen("paint/pixels.txt","w");
   x = fabs(dy)/2.0;
@@ -244,7 +237,6 @@ void savePixel(int x1, int y1, int x2, int y2, int width) {
         for (k = 0; k < width; k++) {
           for ( j = 0; j < width; j++) {
             fprintf(file, "%i\n", getPixel(pixels_x + j, pixels_y + k)); 
-            tcol = tcol + 1;
           }
         }
 
@@ -260,7 +252,6 @@ void savePixel(int x1, int y1, int x2, int y2, int width) {
         for (k = 0; k < width; k++) {
           for ( j = 0; j < width; j++) {
             fprintf(file, "%i\n", getPixel(pixels_x + j, pixels_y + k)); 
-            tcol = tcol + 1;
           }
         }
     }
@@ -276,6 +267,20 @@ void drawRectangle(int x1, int y1, int x2, int y2, int color, int width) {
   drawLine(x1,y1,x1,y2,color,width);
   drawLine(x2,y1,x2,y2,color,width);
   drawLine(x1,y2,x2,y2,color,width);
+}
+
+void savePixelRectangle(int x1, int y1, int x2, int y2, int width) {
+  savePixel(x1,y1,x2,y1,width);
+  savePixel(x1,y1,x1,y2,width);
+  savePixel(x2,y1,x2,y2,width);
+  savePixel(x1,y2,x2,y2,width);
+}
+
+void reDrawRectangle(int x1, int y1, int x2, int y2, int width) {
+  reDrawLine(x1,y1,x2,y1,width);
+  reDrawLine(x1,y1,x1,y2,width);
+  reDrawLine(x2,y1,x2,y2,width);
+  reDrawLine(x1,y2,x2,y2,width);
 }
 
 //this results to be innecefient
@@ -304,7 +309,7 @@ void drawCircle(int x0, int y0, int radius, int color, int width) {
   int err = 0;
 
   while (x >= y) {
-    if (y0 + y >= 140 && y0 + x >= 140 && y0 - y >= 140 && y0 - x >= 140) {
+    if (y0 + y >= y1_Draw && y0 + x >= y1_Draw && y0 - y >= y1_Draw && y0 - x >= y1_Draw) {
       //paints the bottom rigth corner
       putPixelWidth(x0 + x, y0 + y, color, width);
       putPixelWidth(x0 + y, y0 + x, color, width);
@@ -362,14 +367,14 @@ void paintCircle(int x0, int y0, int radius, int outerColor, int innerColor, int
     while (x >= y) {
         //inner part
         for (i = x0 - x; i <= x0 + x; i++) {
-          if (y0 + y >= 140 && y0 - y >= 140) {
+          if (y0 + y >= y1_Draw && y0 - y >= y1_Draw) {
             putPixel(i, y0 + y, innerColor);
             putPixel(i, y0 - y, innerColor);
           }
         }
         //outer part
         for (i = x0 - y; i <= x0 + y; i++) {
-          if (y0 + x >= 140 && y0 - x >= 140) {
+          if (y0 + x >= y1_Draw && y0 - x >= y1_Draw) {
             putPixel(i, y0 + x, innerColor);
             putPixel(i, y0 - x, innerColor);
           }
@@ -432,7 +437,7 @@ void ellipse(float xc, float yc, float x, float y, int color, int width) {
   //parte de abajo
   putPixelWidth(xc + x, yc + y, color, width); //der
   putPixelWidth(xc - x, yc + y, color, width); //izq
-  if (yc - y <= 140) return; //validate tools
+  if (yc - y <= y1_Draw) return; //validate tools
   //parte de arriba
   putPixelWidth(xc + x, yc - y, color, width);  //der
   putPixelWidth(xc - x, yc - y, color, width); //izq
@@ -446,10 +451,10 @@ void paintEllipse(int x0, int y0, int radiousX, int radiousY, int outerColor, ch
 
   y_min_limit = y0-radiousY;
   y_max_limit = y0+radiousY;
-  if (y_min_limit < 140)  
-    y_min_limit = 140;
-  if (y_max_limit >= 600) 
-    y_max_limit = 600;
+  if (y_min_limit < y1_Draw)  
+    y_min_limit = y1_Draw;
+  if (y_max_limit >= y2_Draw) 
+    y_max_limit = y2_Draw;
   for (y=y_min_limit; y <= y_max_limit; y++) {
     d = (y-y0)/(radiousY+0.5); // para que no sea cero
     sqr = sqrt(1.0 - d * d) * (radiousX + 0.5);
@@ -457,8 +462,8 @@ void paintEllipse(int x0, int y0, int radiousX, int radiousY, int outerColor, ch
     x_max_limit = x0 + sqr;
     if (x_min_limit < 0)  
       x_min_limit = 0;
-    if (x_max_limit >= 800) 
-      x_max_limit = 800;
+    if (x_max_limit >= x2_Draw) 
+      x_max_limit = x2_Draw;
     if (x_max_limit >= x_min_limit){
       drawLine(x_min_limit, y, x_max_limit, y, innerColor, 1);
     }
