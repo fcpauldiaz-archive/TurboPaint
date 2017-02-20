@@ -1,10 +1,11 @@
 
 
 void saveUndo() {
-  FILE *f;
-  int i, j;
-  f = fopen("paint/undo.txt", "w");
-  
+  FILE *f, *f2;
+  int i, j, pixelColor;
+  char line[20];
+  f = fopen("paint/undo2.txt", "w");
+  f2 = fopen("paint/undo.txt", "r");
   // Se escribe las dimensiones para recorrer el archivo
   for (j=140; j <= 600; j++){
     // Se recorren los pixeles en x
@@ -16,7 +17,19 @@ void saveUndo() {
   //finish save undo
   fprintf(f, "%i\n", 6969); 
   // Se cierra el archivo
+  while(1) {
+    sscanf(fgets(line,sizeof(line), f2), "%i", &pixelColor);
+    fprintf(f, "%i\n", pixelColor);
+    if (pixelColor == 7070) {
+      break;
+    }
+    
+  }
   fclose(f);
+  fclose(f2);
+  remove("paint/undo.txt");
+  printf("%d\n", rename("paint/undo2.txt", "paint/undo.txt"));
+
 }
 
 void undo() {
@@ -42,7 +55,7 @@ void undo() {
   i = 0;
   
   //attempt to make nUndos
-  /*
+  
   printf("%d\n", counter);
   f2 = fopen("paint/undo2.txt", "wb");
   while(1) {
@@ -59,6 +72,6 @@ void undo() {
   fclose(f2);
   fclose(f);
   remove("paint/undo.txt");
-  printf("%d\n", rename("paint/undo2.txt", "paint/undo.txt"));*/
+  printf("%d\n", rename("paint/undo2.txt", "paint/undo.txt"));
   fclose(f);
 }
