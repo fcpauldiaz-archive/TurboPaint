@@ -10,7 +10,7 @@
 
 typedef unsigned char  byte;
 typedef unsigned short word;
-typedef struct tagBITMAP {
+typedef struct bmp {
   word width;
   word height;
   char palette[256*3];
@@ -76,12 +76,12 @@ void skipf(FILE *filepointer, int num_bytes){
 //sets the screen colors
 void changePalette(char far *palette){
   asm {
-  les dx, [palette]
-  mov ax, 0x1012
-  mov bx, 0
-  mov cx, 256
-  int 0x10
-    }
+    les dx, [palette]
+    mov ax, 0x1012
+    mov bx, 0
+    mov cx, 256
+    int 0x10
+  }
 }
 
 //get palette
@@ -139,7 +139,7 @@ void saveImage(int x, int y, int width, int height, char file[]){
   palette[13] = 0xFF00FF;
   palette[14] = 0xFFFF00;
   palette[15] = 0xFFFFFF;
-  fwrite(palette, sizeof(unsigned long), 256, fp);
+  fwrite(palette, sizeof(unsigned long), 255, fp);
  
   for(j=(y+height); j>=y; j--){
     for(i=x; i<=(width+x)-1; i++){

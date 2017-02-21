@@ -7,29 +7,29 @@ unsigned int ** bufferMouse;
 
 #define O   12  //outer color mouse
 #define I   0  //inner color mouse
-#define mouseWidth 13
+#define mouseWidth 12
 #define mouseHeight 16
 
 
 /* mouse form */
 static unsigned char mouse[mouseWidth * mouseHeight] =
 {
-  O,O,O,0,0,0,0,0,0,0,0,0,0,
-  O,O,O,O,0,0,0,0,0,0,0,0,0,
-  O,O,I,O,O,0,0,0,0,0,0,0,0,
-  O,O,I,I,O,O,0,0,0,0,0,0,0,
-  O,O,I,I,I,O,O,0,0,0,0,0,0,
-  O,O,I,I,I,I,O,O,0,0,0,0,0,
-  O,O,I,I,I,I,I,O,O,0,0,0,0,
-  O,O,I,I,I,I,I,I,O,O,0,0,0,
-  O,O,I,I,I,I,I,I,I,O,O,0,0,
-  O,O,I,I,I,I,I,I,I,I,O,O,0,
-  O,O,I,I,I,I,I,I,O,O,O,O,0,
-  O,O,I,I,I,I,I,I,O,O,0,0,0,
-  O,O,O,O,O,O,I,I,O,O,0,0,0,
-  O,O,O,O,O,O,I,I,I,O,0,0,0,
-  0,0,0,0,O,O,O,I,I,O,0,0,0,
-  0,0,0,0,0,O,O,O,O,O,0,0,0,
+  O,O,0,0,0,0,0,0,0,0,0,0,
+  O,O,O,0,0,0,0,0,0,0,0,0,
+  O,I,O,O,0,0,0,0,0,0,0,0,
+  O,I,I,O,O,0,0,0,0,0,0,0,
+  O,I,I,I,O,O,0,0,0,0,0,0,
+  O,I,I,I,I,O,O,0,0,0,0,0,
+  O,I,I,I,I,I,O,O,0,0,0,0,
+  O,I,I,I,I,I,I,O,O,0,0,0,
+  O,I,I,I,I,I,I,I,O,O,0,0,
+  O,I,I,I,I,I,I,I,I,O,O,0,
+  O,I,I,I,I,I,I,O,O,O,O,0,
+  O,I,I,I,I,I,I,O,O,0,0,0,
+  O,O,O,O,O,I,I,O,O,0,0,0,
+  O,O,O,O,O,I,I,I,O,0,0,0,
+  0,0,0,O,O,O,I,I,O,0,0,0,
+  0,0,0,0,O,O,O,O,O,0,0,0,
 };
 
 

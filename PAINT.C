@@ -161,8 +161,11 @@ void main() {
 
       //REDO
       if (x >= 189 && x <= 221 && y >= 81 && y <= 120) {
-        redo();
+        mouseHide(x, y);
         saveUndo();
+        redo();
+        mouseShow(x, y);
+
 
       }
       //HELP
@@ -179,8 +182,10 @@ void main() {
       if (x >= 758 && x <= 795 && y >= 95 && y <= 130) actualPattern = 3;
       //undo
       if (x >= 224 && x <= 260 && y >= 81 && y <= 119) {
-        undo();
+        mouseHide(x, y);
         saveRedo();
+        undo();
+        mouseShow(x, y);
       }
       //COLOR PICKER 
       if (x >= 526 && x <= 794 && y >= 30 && y <= 90) {
@@ -270,6 +275,7 @@ void main() {
             }
             mouseHide(x, y);
             drawCircle(x1, y1, radio, actualColor1, actualWidth);
+            saveRedo();
             mouseShow(x, y);
             break;
           case ELLIPSE:
@@ -285,6 +291,7 @@ void main() {
             }
             mouseHide(x, y);
             drawEllipse(x1, y1, rdX, rdY, actualColor1, actualWidth);
+            saveRedo();
             mouseShow(x, y);
             break;
           case PAINT_RECTANGLE:
@@ -297,6 +304,7 @@ void main() {
             }
             mouseHide(x, y);
             paintRectangle(x1, y1, x, y, actualColor1, actualColor2, actualWidth);
+            saveRedo();
             mouseShow(x, y);
             break;
           case PAINT_CIRCLE:
@@ -324,6 +332,7 @@ void main() {
             }
             mouseHide(x, y);
             paintCircle(x1, y1, radio, actualColor1, actualColor2, actualWidth);
+            saveRedo();
             mouseShow(x, y);
             break;
           case PAINT_ELLIPSE:
@@ -339,6 +348,7 @@ void main() {
             }
             mouseHide(x, y);
             paintEllipse(x1, y1, rdX, rdY, actualColor1, actualColor2, actualWidth);
+            saveRedo();
             mouseShow(x, y);
             break;
           case POLYGON:
@@ -413,6 +423,7 @@ void main() {
               xtemp = x; ytemp = y;
               getMouse(&x, &y, &clicked);
             }
+            saveRedo();
             mouseShow(x, y);
             xtemp = x; ytemp = y;
             break;
@@ -420,6 +431,7 @@ void main() {
             mouseHide(x, y);
             saveUndo();
             bucket(x, y, actualColor2, getPixel(x, y), actualPattern);
+            saveRedo();
             mouseShow(x, y);
             break;
           case PENCIL:
@@ -431,6 +443,7 @@ void main() {
               x1 = x; y1 = y;
               getMouse(&x, &y, &clicked);
             }
+            saveRedo();
             mouseShow(x, y);
             xtemp = x; ytemp = y;
             break;
@@ -450,8 +463,13 @@ void main() {
           case SPRAY:
             mouseHide(x, y);
             saveUndo();
-            paintSpray(x, y, actualColor1, actualWidth);
+            while(clicked == 1){
+              getMouse(&x, &y, &clicked); 
+              paintSpray(x, y, actualColor1, actualWidth);
+            }
+            saveRedo();
             mouseShow(x, y);
+            xtemp = x; ytemp = y;
             break;
           case COPY:
             x1 = x; y1 = y;
