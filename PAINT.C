@@ -137,17 +137,29 @@ void main() {
       if (x >= 2 && x <= 53 && y >= 32 && y <= 74) button = BUCKET;
 
 
-      //save image
+      //SAVE IMAGE
       if (x >= 11 && x <= 36 && y >= 0 && y <= 25) {
         mouseHide(x, y);
         saveImage(0, 140, 800, 460, "paint/image.bmp");
         mouseShow(x, y);
       }
-      //load
+      //LOAD IMAGE
       if (x >= 52 && x <= 79 && y >= 2 && y <= 23) {
         mouseHide(x, y);
         loadImage(0, 140, "paint/image.bmp", &bitmap);
         mouseShow(x, y);
+      }
+      //COPY
+      if (x >= 152 && x <= 188 && y >= 77 && y <= 119) button = COPY;
+      //PASTE
+      if (x >= 203 && x <= 243 && y >= 33 && y <= 83) button = PASTE;
+      //CUT
+      if (x >= 154 && x <= 196 && y >= 31 && y <= 74) button = CUT;
+
+      //HELP
+      if (x >= 734 && x <= 750 && y >= 0 && y <= 25) {
+        openBMP(0, 0, "paint/help.bmp", &bitmap);
+        paintPalette(FULL_PALETTE);
       }
 
       //PATTERN 1
@@ -427,6 +439,30 @@ void main() {
             mouseHide(x, y);
             saveUndo();
             paintSpray(x, y, actualColor1, actualWidth);
+            mouseShow(x, y);
+            break;
+          case COPY:
+            x1 = x; y1 = y;
+            while (clicked == 1) {
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+            }
+            mouseHide(x, y);
+            copyPixels(x1, y1, x, y);
+            mouseShow(x, y);
+            break;
+          case PASTE:
+            mouseHide(x, y);
+            saveUndo();
+            pastePixels(x, y);
+            mouseShow(x, y);
+            break;
+          case CUT:
+            x1 = x; y1 = y;
+            while (clicked == 1) {
+              repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+            }
+            mouseHide(x, y);
+            cutPixels(x1, y1, x, y);
             mouseShow(x, y);
             break;
         }

@@ -55,15 +55,18 @@ void undo() {
 }
 //copy the pixels in a certain location
 void copyPixels(int x1, int y1, int x2, int y2) {
-   FILE *f, *f2;
+  FILE *f, *f2;
   int i, j, pixelColor;
   char line[20];
   f = fopen("paint/copy.txt", "w");
-  // Se escribe las dimensiones para recorrer el archivo
+  // write dimensions
+  fprintf(f, "%i\n", abs(x2 - x1));
+  fprintf(f, "%i\n", abs(y2 - y1));
+  //y pixels
   for (j=y1; j <= y2; j++){
-    // Se recorren los pixeles en x
+    // x pixels
     for (i=x1; i <= x2; i++){
-      // Se escribe en el archivo el color obtenido
+      // write color to file
       fprintf(f, "%i\n", getPixel(i,j));
     }
   }
@@ -71,4 +74,41 @@ void copyPixels(int x1, int y1, int x2, int y2) {
   fprintf(f, "%i\n", 6969); 
   // Se cierra el archivo
   fclose(f);
+}
+//paste 
+void pastePixels(int x1, int y1) {
+  int x, y, dx, dy, pixelColor;
+  long i, j, counter;
+  FILE *f, *f2;
+  char line[20]; //alocate space for line;
+  
+  counter = 0;
+  x = 0; y = 0;
+  f = fopen("paint/copy.txt", "r");
+  sscanf(fgets(line,sizeof(line),f), "%i", &dx);
+  sscanf(fgets(line,sizeof(line),f), "%i", &dy);
+    // Mientras hayan lineas en el archivo
+  while(fgets(line,sizeof(line),f) != NULL){
+    // Se recorre y
+    if (y < dy){
+      // Se recorre x
+      if (x < dx){
+        int i;
+        // Se obtiene el color de la linea como union de caracteres
+        sscanf(line, "%i", &i);
+        // Se determina si esta dentro del canvas para poder pintar
+        if (x1 + x<800 && y1 + y<600){
+          // Pinta el pixel
+          //putPixelThickSave(x1 + x, y1 + y, i, 1, f);
+          putPixel(x1 + x, y1 + y, i);
+        }
+        x += 1;
+      }else{
+        x = 0;
+        y += 1;
+      }
+    }
+  }
+  fclose(f);
+
 }
