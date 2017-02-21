@@ -342,12 +342,10 @@ void main() {
             }
             break;
           case PAINT_POLYGON:
+            //saveUndo();
             x1 = x; y1= y;
             x2 = x; y2 = y;
             edgesCount = 0;
-            mouseHide(x, y);
-            saveUndo();
-            mouseShow(x, y);
             while (clicked != 2) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
               while(clicked != 1 && clicked != 2){
