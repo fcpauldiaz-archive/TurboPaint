@@ -150,7 +150,10 @@ void main() {
       if (x >= 52 && x <= 79 && y >= 2 && y <= 23) {
         mouseHide(x, y);
         loadImage(0, 140, "paint/image.bmp", &bitmap);
+        openBMP(0, 0, "paint/header.bmp", &bitmap);
+        paintPalette(FULL_PALETTE);
         mouseShow(x, y);
+
       }
       //COPY
       if (x >= 152 && x <= 188 && y >= 77 && y <= 119) button = COPY;

@@ -118,8 +118,8 @@ void saveImage(int x, int y, int width, int height, char file[]){
   headerBuf[8] = width*height;                // actual size
   headerBuf[9] = 0;             
   headerBuf[10] = 0;            
-  headerBuf[11] = 16;                          // colors
-  headerBuf[12] = 16;                          // important colors
+  headerBuf[11] = 256;                          // colors
+  headerBuf[12] = 256;                          // important colors
   fwrite(headerBuf, sizeof(headerBuf[0]), 13, fp);
   //set palette
   getPalette(palette);
