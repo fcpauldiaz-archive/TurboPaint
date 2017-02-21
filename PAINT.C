@@ -30,7 +30,7 @@ void main() {
   int actualWidth, actualPattern;
   int radio, rdX, rdY;
   int x1, y1, x2, y2, tempx, tempy;
-  int sX1, sX2, sY1, sY2, sTrue;
+  int sX1, sX2, sY1, sY2;
   unsigned char font[58][16*16];
   unsigned char backspace[16][16];
   FILE *fontF;
@@ -52,7 +52,7 @@ void main() {
   clicked = 0;
   //paintCanvas();
   paintPalette(FULL_PALETTE);
-  colorFill = 1;  sTrue = 0;  //initialize selected color pane
+  colorFill = 1;   //initialize selected color pane
   actualColor1 = COLOR_FILL_1;  //initialize paint color
   actualColor2 = COLOR_FILL_2; //initialize paint color
   actualWidth = 1;  //initialize width
@@ -251,6 +251,7 @@ void main() {
             mouseHide(x, y);
             drawRectangle(x1, y1, x, y, actualColor1, actualWidth);
             saveRedo();
+            //remove("paint/pixels.txt");
             mouseShow(x, y);
             break;
           case CIRCLE:
@@ -304,10 +305,14 @@ void main() {
             mouseShow(x, y);
             while (clicked == 1) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
+              //savePixelRectangle(x1, y1, x, y, actualWidth);
+              //drawRectangle(x1, y1, x, y, actualColor1, actualWidth);
+              //reDrawRectangle(x1, y1, x, y, actualWidth);
             }
             mouseHide(x, y);
             paintRectangle(x1, y1, x, y, actualColor1, actualColor2, actualWidth);
             saveRedo();
+            //remove("paint/pixels.txt");
             mouseShow(x, y);
             break;
           case PAINT_CIRCLE:

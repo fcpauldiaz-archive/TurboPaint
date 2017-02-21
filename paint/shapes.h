@@ -263,9 +263,9 @@ void savePixel(int x1, int y1, int x2, int y2, int width) {
 //draw rectangle with no fill
 void drawRectangle(int x1, int y1, int x2, int y2, int color, int width) {
   drawLine(x1,y1,x2,y1,color,width);
-  drawLine(x1,y1,x1,y2,color,width);
-  drawLine(x2,y1,x2,y2,color,width);
-  drawLine(x1,y2,x2,y2,color,width);
+  drawLine(x1,y1+1,x1,y2,color,width);
+  drawLine(x2,y1+1,x2,y2,color,width);
+  drawLine(x1+1,y2,x2-1,y2,color,width);
 }
 
 void savePixelRectangle(int x1, int y1, int x2, int y2, int width) {
@@ -277,9 +277,9 @@ void savePixelRectangle(int x1, int y1, int x2, int y2, int width) {
 
 void reDrawRectangle(int x1, int y1, int x2, int y2, int width) {
   reDrawLine(x1,y1,x2,y1,width);
-  reDrawLine(x1,y1,x1,y2,width);
-  reDrawLine(x2,y1,x2,y2,width);
-  reDrawLine(x1,y2,x2,y2,width);
+  reDrawLine(x1,y1+1,x1,y2,width);
+  reDrawLine(x2,y1+1,x2,y2,width);
+  reDrawLine(x1+1,y2,x2-1,y2,width);
 }
 
 //this results to be innecefient

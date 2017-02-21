@@ -27,13 +27,12 @@ void saveUndo() {
 
 void undo() {
   int x, y, x1, y1, pixelColor;
-  long i, j, counter;
+  long i, j;
   FILE *f, *f2;
   char line[20]; //alocate space for line;
   char buf[25];
   undoCounter = undoCounter - 1;
   sprintf(buf, "paint/undo-%i.txt", undoCounter);
-  counter = 0;
   if (ACTIVATE_UNDO == 1) {
     f = fopen(buf, "r");
     
@@ -78,11 +77,10 @@ void copyPixels(int x1, int y1, int x2, int y2) {
 //paste 
 void pastePixels(int x1, int y1) {
   int x, y, dx, dy, pixelColor;
-  long i, j, counter;
+  long i, j;
   FILE *f, *f2;
   char line[20]; //alocate space for line;
   
-  counter = 0;
   x = 0; y = 0;
   f = fopen("paint/copy.txt", "r");
   sscanf(fgets(line,sizeof(line),f), "%i", &dx);
