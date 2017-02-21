@@ -172,5 +172,6 @@ void setNextNode(node_t ** next_node, int x, int y) {
 
 //SPRAY TOOL
 void paintSpray(int x, int y, int color, int width) {
+  delay(5);
   putPixel(x - rand()%width, y-rand()%width, color);
 }
