@@ -13,6 +13,7 @@
 #define MAX_VERTICES 100
 int vertex[MAX_VERTICES][2];
 int undoCounter = 0;
+int redoCounter = 0;
 #include "paint/graphic.h";
 #include "paint/mouse.h";
 #include "paint/bmpfiles.h";
@@ -23,14 +24,16 @@ int undoCounter = 0;
 #include "paint/cpboard.h";
 
 
-
-
 void main() {
   int z, x, y, clicked, xtemp, ytemp, edgesCount;
   int button, selectedBtn, tempColor, actualColor1, actualColor2;
   int actualWidth, actualPattern;
   int radio, rdX, rdY;
   int x1, y1, x2, y2, tempx, tempy;
+  int sX1, sX2, sY1, sY2, sTrue;
+  unsigned char font[58][16*16];
+  unsigned char backspace[16][16];
+  FILE *fontF;
   
   int selectedWidth, colorFill; //select width of line
   
@@ -49,7 +52,7 @@ void main() {
   clicked = 0;
   //paintCanvas();
   paintPalette(FULL_PALETTE);
-  colorFill = 1;    //initialize selected color pane
+  colorFill = 1;  sTrue = 0;  //initialize selected color pane
   actualColor1 = COLOR_FILL_1;  //initialize paint color
   actualColor2 = COLOR_FILL_2; //initialize paint color
   actualWidth = 1;  //initialize width
@@ -136,7 +139,7 @@ void main() {
       //BUCKET FILL
       if (x >= 2 && x <= 53 && y >= 32 && y <= 74) button = BUCKET;
 
-
+      if (x >= 83 && x <= 123 && y >= 101 && y <= 147) button = TEXT;
       //SAVE IMAGE
       if (x >= 11 && x <= 36 && y >= 0 && y <= 25) {
         mouseHide(x, y);
@@ -156,6 +159,12 @@ void main() {
       //CUT
       if (x >= 154 && x <= 196 && y >= 31 && y <= 74) button = CUT;
 
+      //REDO
+      if (x >= 189 && x <= 221 && y >= 81 && y <= 120) {
+        redo();
+        saveUndo();
+
+      }
       //HELP
       if (x >= 734 && x <= 750 && y >= 0 && y <= 25) {
         openBMP(0, 0, "paint/help.bmp", &bitmap);
@@ -169,7 +178,10 @@ void main() {
       //PATTERN 3
       if (x >= 758 && x <= 795 && y >= 95 && y <= 130) actualPattern = 3;
       //undo
-      if (x >= 224 && x <= 260 && y >= 81 && y <= 119) undo();
+      if (x >= 224 && x <= 260 && y >= 81 && y <= 119) {
+        undo();
+        saveRedo();
+      }
       //COLOR PICKER 
       if (x >= 526 && x <= 794 && y >= 30 && y <= 90) {
         mouseHide(x, y);
@@ -230,7 +242,7 @@ void main() {
             }
             mouseHide(x, y);
             drawRectangle(x1, y1, x, y, actualColor1, actualWidth);
-            //remove("paint/pixels.txt");
+            saveRedo();
             mouseShow(x, y);
             break;
           case CIRCLE:
@@ -464,6 +476,8 @@ void main() {
             mouseHide(x, y);
             cutPixels(x1, y1, x, y);
             mouseShow(x, y);
+            break;
+          case TEXT:
             break;
         }
       }

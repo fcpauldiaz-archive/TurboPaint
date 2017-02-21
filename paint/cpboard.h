@@ -87,28 +87,101 @@ void pastePixels(int x1, int y1) {
   f = fopen("paint/copy.txt", "r");
   sscanf(fgets(line,sizeof(line),f), "%i", &dx);
   sscanf(fgets(line,sizeof(line),f), "%i", &dy);
-    // Mientras hayan lineas en el archivo
-  while(fgets(line,sizeof(line),f) != NULL){
-    // Se recorre y
-    if (y < dy){
-      // Se recorre x
-      if (x < dx){
-        int i;
-        // Se obtiene el color de la linea como union de caracteres
-        sscanf(line, "%i", &i);
-        // Se determina si esta dentro del canvas para poder pintar
-        if (x1 + x<800 && y1 + y<600){
-          // Pinta el pixel
-          //putPixelThickSave(x1 + x, y1 + y, i, 1, f);
-          putPixel(x1 + x, y1 + y, i);
+  while(fgets(line,sizeof(line),f) != NULL) {
+    if (y < dy) {
+      if (x < dx) {
+        //get pixel color
+        sscanf(line, "%i", &pixelColor);
+        //check limits
+        if (x1 + x < 800 && y1 + y < 600){
+          putPixel(x1 + x, y1 + y, pixelColor);
         }
         x += 1;
-      }else{
+      } else {
         x = 0;
         y += 1;
       }
     }
   }
   fclose(f);
+}
+//cut
+void cutPixels(int x1, int y1, int x2, int y2) {
+  FILE *f, *f2;
+  int i, j, pixelColor;
+  char line[20];
+  f = fopen("paint/copy.txt", "w");
+  // write dimensions
+  fprintf(f, "%i\n", abs(x2 - x1));
+  fprintf(f, "%i\n", abs(y2 - y1));
+  //y pixels
+  for (j=y1; j <= y2; j++){
+    // x pixels
+    for (i=x1; i <= x2; i++){
+      // write color to file
+      fprintf(f, "%i\n", getPixel(i,j));
+      //delete pixels
+      putPixel(i, j, 255);
+    }
+  }
+  //finish save pixels
+  fprintf(f, "%i\n", 6969); 
+  // Se cierra el archivo
+  fclose(f);
+}
 
+
+void saveRedo() {
+  FILE *f, *f2;
+  int i, j, pixelColor;
+  char line[20];
+  char buf[25];
+  sprintf(buf, "paint/redo-%i.txt", redoCounter);
+  if (ACTIVATE_UNDO == 1) {
+    f = fopen(buf, "w");
+    // Se escribe las dimensiones para recorrer el archivo
+    for (j=140; j <= 600; j++){
+      // Se recorren los pixeles en x
+      for (i=0; i <= 800; i++){
+        // Se escribe en el archivo el color obtenido
+        fprintf(f, "%i\n", getPixel(i,j));
+      }
+    }
+    //finish save undo
+    fprintf(f, "%i\n", 6969); 
+    // Se cierra el archivo
+    fclose(f);
+    redoCounter = redoCounter + 1;
+  }
+
+}
+
+
+void redo() {
+  int x, y, x1, y1, pixelColor;
+  long i, j, counter;
+  FILE *f, *f2;
+  char line[20]; //alocate space for line;
+  char buf[25];
+  redoCounter = redoCounter - 1;
+  sprintf(buf, "paint/redo-%i.txt", redoCounter);
+  counter = 0;
+  if (ACTIVATE_UNDO == 1) {
+    f = fopen(buf, "r");
+    
+    for (j=140; j<= 600; j++) {
+      // Se recorren los pixeles en x
+      for (i=0; i <= 800; i++) {
+        // Se escribe en el archivo el color obtenido
+        sscanf(fgets(line,sizeof(line), f), "%i", &pixelColor);
+        if (pixelColor == 6969) {
+          break;
+        }
+        putPixel(i, j, pixelColor);
+      }
+    }
+    i = 0;
+    fclose(f);
+
+  }
 }
