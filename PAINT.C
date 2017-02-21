@@ -136,6 +136,20 @@ void main() {
       //BUCKET FILL
       if (x >= 2 && x <= 53 && y >= 32 && y <= 74) button = BUCKET;
 
+
+      //save image
+      if (x >= 11 && x <= 36 && y >= 0 && y <= 25) {
+        mouseHide(x, y);
+        saveImage(0, 140, 800, 460, "paint/image.bmp");
+        mouseShow(x, y);
+      }
+      //load
+      if (x >= 52 && x <= 79 && y >= 2 && y <= 23) {
+        mouseHide(x, y);
+        loadImage(0, 140, "paint/image.bmp", &bitmap);
+        mouseShow(x, y);
+      }
+
       //PATTERN 1
       if (x >= 678 && x <= 710 && y >= 94 && y <= 130) actualPattern = 1;
       //PATTERN 2

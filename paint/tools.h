@@ -36,7 +36,7 @@ void bucket(int x, int y, char fillColor, char clickColor, int pattern){
     putPixel(x, y, fillColor);
     //left
     calcX = x-1;
-    if (getPixel(calcX, y) == clickColor && (x > 0 && x < 800 && (calcY) > 140 && (calcY) < 600)) {
+    if (getPixel(calcX, y) == clickColor && (x > 0 && x < MAX_X && (calcY) > y1_Draw && (calcY) < MAX_Y)) {
       if (pattern == 1) {
         fillColor = getPixel(678 + x%30, 95 + y%35);
       } else if (pattern == 2) {
@@ -52,7 +52,7 @@ void bucket(int x, int y, char fillColor, char clickColor, int pattern){
     }
     //up
     calcY = y+1;
-    if (getPixel(x, calcY) == clickColor && (x > 0 && x < 800 && (calcY) > 140 && (calcY) < 600)) {
+    if (getPixel(x, calcY) == clickColor && (x > 0 && x < MAX_X && (calcY) > y1_Draw && (calcY) < MAX_Y)) {
       if (pattern == 1) {
         fillColor = getPixel(678 + x%30, 95 + y%35);
       } else if (pattern == 2) {
@@ -67,7 +67,7 @@ void bucket(int x, int y, char fillColor, char clickColor, int pattern){
     }
     //down
     calcY = y-1;
-    if(getPixel(x, calcY) == clickColor && (x>0 && x<800 && (calcY) > 140 && (calcY)<600)){
+    if(getPixel(x, calcY) == clickColor && (x>0 && x < MAX_X && (calcY) > y1_Draw && (calcY)<MAX_Y)){
       if (pattern == 1) {
         fillColor = getPixel(678 + x%30, 95 + y%35);
       } else if (pattern == 2) {
@@ -82,7 +82,7 @@ void bucket(int x, int y, char fillColor, char clickColor, int pattern){
     }
     //right
     calcX = x+1;
-    if(getPixel(calcX, y) == clickColor && (x>0 && x<800 && (calcY)>140 && (calcY)<600)){
+    if(getPixel(calcX, y) == clickColor && (x>0 && x < MAX_X && (calcY)>y1_Draw && (calcY)<MAX_Y)){
       if (pattern == 1) {
         fillColor = getPixel(678 + x%30, 95 + y%35);
       } else if (pattern == 2) {
@@ -109,7 +109,7 @@ void bucket(int x, int y, char fillColor, char clickColor, int pattern){
 
 /* RECURSIVE ALGORITHIM. STACK OVERFLOW
 void bucket(int x, int y, int originalColor, int clickColor, int fillColor) {
-  if (y > 600 || y < 140 || x < 0 || x > 800)
+  if (y > MAX_Y || y < y1_Draw || x < 0 || x > MAX_X)
     return;
   if (originalColor == clickColor) {
     putPixel(x, y, fillColor);
@@ -127,7 +127,7 @@ void bucket(int x, int y, int originalColor, int clickColor, int fillColor) {
   int tempColor1, tempColor2, tempColor3, tempColor4;
   x1 = x; y1 = y;
   while(1) {
-    if (x1 > 800 || x < 0 || y > 600 || y < 140) break;
+    if (x1 > MAX_X || x < 0 || y > MAX_Y || y < y1_Draw) break;
     putPixel(x1, y1, fillColor);
     //arriba
     tempColor1 = getPixel(x1, y1 - 1);

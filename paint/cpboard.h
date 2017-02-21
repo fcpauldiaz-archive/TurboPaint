@@ -53,3 +53,22 @@ void undo() {
 
   }
 }
+//copy the pixels in a certain location
+void copyPixels(int x1, int y1, int x2, int y2) {
+   FILE *f, *f2;
+  int i, j, pixelColor;
+  char line[20];
+  f = fopen("paint/copy.txt", "w");
+  // Se escribe las dimensiones para recorrer el archivo
+  for (j=y1; j <= y2; j++){
+    // Se recorren los pixeles en x
+    for (i=x1; i <= x2; i++){
+      // Se escribe en el archivo el color obtenido
+      fprintf(f, "%i\n", getPixel(i,j));
+    }
+  }
+  //finish save pixels
+  fprintf(f, "%i\n", 6969); 
+  // Se cierra el archivo
+  fclose(f);
+}
