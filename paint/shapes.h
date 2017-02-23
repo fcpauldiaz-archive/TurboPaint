@@ -134,7 +134,11 @@ void drawLine(int x1, int y1, int x2, int y2, int color, int width) {
     for (i=0; i < steps; i++) {
       pixels_x = pixels_x + x;
       pixels_y = pixels_y + y;
-      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+      if (forceDraw == 1 || 
+          pixels_x > x1_Draw && 
+          pixels_x < x2_Draw &&  
+          pixels_y > y1_Draw &&  
+          pixels_y < y2_Draw)
         putPixelWidth((int)pixels_x, (int)pixels_y,color, width);
     }
   } else {
@@ -144,7 +148,11 @@ void drawLine(int x1, int y1, int x2, int y2, int color, int width) {
     for (i=0; i < steps; i++) {
       pixels_x = pixels_x + x;
       pixels_y = pixels_y + y;
-      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+      if (forceDraw == 1 || 
+          pixels_x > x1_Draw && 
+          pixels_x < x2_Draw &&  
+          pixels_y > y1_Draw &&  
+          pixels_y < y2_Draw)
         putPixelWidth((int)pixels_x, (int)pixels_y,color, width);
     }
   }
@@ -180,7 +188,11 @@ void reDrawLine(int x1, int y1, int x2, int y2, int width) {
     for (i=0; i < steps; i++) {
       pixels_x = pixels_x + x;
       pixels_y = pixels_y + y;
-      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+      if (forceDraw == 1 || 
+          pixels_x > x1_Draw && 
+          pixels_x < x2_Draw &&  
+          pixels_y > y1_Draw &&  
+          pixels_y < y2_Draw)
          for (k = 0; k < width; k++) {
           for ( j = 0; j < width; j++) {
             sscanf(fgets(line,sizeof(line),file), "%i", &pixel);
@@ -195,7 +207,11 @@ void reDrawLine(int x1, int y1, int x2, int y2, int width) {
     for (i=0; i < steps; i++) {
       pixels_x = pixels_x + x;
       pixels_y = pixels_y + y;
-      if (forceDraw == 1 || pixels_x > x1_Draw && pixels_x < x2_Draw &&  pixels_y > y1_Draw &&  pixels_y < y2_Draw)
+      if (forceDraw == 1 || 
+          pixels_x > x1_Draw && 
+          pixels_x < x2_Draw &&  
+          pixels_y > y1_Draw &&  
+          pixels_y < y2_Draw)
       for (k = 0; k < width; k++) {
           for ( j = 0; j < width; j++) {
             sscanf(fgets(line,sizeof(line),file), "%i", &pixel);
