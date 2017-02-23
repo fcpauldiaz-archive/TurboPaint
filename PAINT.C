@@ -22,6 +22,7 @@ int redoCounter = 0;
 #include "paint/palette.h";
 #include "paint/tools.h";
 #include "paint/cpboard.h";
+#include "paint/pText.h";
 
 
 void main() {
@@ -31,10 +32,8 @@ void main() {
   int radio, rdX, rdY;
   int x1, y1, x2, y2, tempx, tempy;
   int sX1, sX2, sY1, sY2;
-  unsigned char font[58][16*16];
-  unsigned char backspace[16][16];
+  char font[58][16*16];
   FILE *fontF;
-  
   int selectedWidth, colorFill; //select width of line
   
   BITMAP bitmap;
@@ -47,6 +46,14 @@ void main() {
   
   initMouse();
   validateMouse(MAX_X, MAX_Y);
+
+  if((fontF = fopen ("paint/fuente.fnt","rb"))== NULL){
+    return;
+  }
+  for(x=0; x<58; x++){
+    fread(&font[x], 1, 16*16, fontF);
+  }
+  fclose(fontF);
 
   openBMP(0, 0, "paint/pfondo.bmp", &bitmap);
   clicked = 0;
@@ -504,6 +511,10 @@ void main() {
             mouseShow(x, y);
             break;
           case TEXT:
+            mouseHide(x, y);
+            saveUndo();
+            showText(x, y, actualColor1, font);
+            mouseShow(x, y);
             break;
         }
       }
