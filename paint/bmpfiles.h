@@ -110,7 +110,7 @@ void saveImage(int x, int y, int width, int height, char file[]){
   //opens file
   fileSave = fopen(file, "wb");
   fwrite(headerInfo, sizeof(headerInfo[0]),2, fileSave);
-  
+  x--; y--;                                   //improve file image at save
   headerBuf[0] = width * height + 1024 + 54;  //size
   headerBuf[1] = 0;                           // reserved
   headerBuf[2] = 1024 + 54;                   // offset

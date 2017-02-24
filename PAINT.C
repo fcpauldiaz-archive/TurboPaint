@@ -55,7 +55,7 @@ void main() {
   }
   fclose(fontF);
 
-  openBMP(0, 0, "paint/pfondo.bmp", &bitmap);
+  openFileBMP(0, 0, "paint/pfondo.bmp", &bitmap);
   clicked = 0;
   //paintCanvas();
   paintPalette(FULL_PALETTE);
@@ -157,7 +157,7 @@ void main() {
       if (x >= 52 && x <= 79 && y >= 2 && y <= 23) {
         mouseHide(x, y);
         loadImage(0, 140, "paint/image.bmp", &bitmap);
-        openBMP(0, 0, "paint/header.bmp", &bitmap);
+        openFileBMP(0, 0, "paint/header.bmp", &bitmap);
         paintPalette(FULL_PALETTE);
         mouseShow(x, y);
 
@@ -180,7 +180,7 @@ void main() {
       }
       //HELP
       if (x >= 734 && x <= 750 && y >= 0 && y <= 25) {
-        openBMP(0, 0, "paint/help.bmp", &bitmap);
+        openFileBMP(0, 0, "paint/help.bmp", &bitmap);
         paintPalette(FULL_PALETTE);
       }
 
