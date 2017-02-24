@@ -10,18 +10,17 @@
 #define BUCKET 9
 #define SPRAY 10
 #define ERASER 11
-#define TEXT 12
-#define POLYGON 13
-#define PAINT_POLYGON 14
-#define PICKER 15
-#define SAVE 16
-#define LOAD 17
-#define NEW 18
-#define CUT 19
-#define COPY 20
-#define PASTE 21
-#define UNDO 22
-#define SELECTED_COLOR 23
+#define POLYGON 12
+#define PAINT_POLYGON 13
+#define PICKER 14
+#define SAVE 15
+#define LOAD 16
+#define NEW 17
+#define CUT 18
+#define COPY 19
+#define PASTE 20
+#define TEXT 21
+#define SELECTED_COLOR 22
 
 //AVALIABLE WIDTHS
 #define WIDTH1 1

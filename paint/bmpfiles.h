@@ -4,76 +4,81 @@
  * Paint en C++ y assembler de Intel
  * manejador de archivos bmp
  */
-#ifndef __DOS_H
-  #include <dos.h>
-#endif 
 
-typedef unsigned char  byte;
-typedef unsigned short word;
 typedef struct bmp {
-  word width;
-  word height;
+  int width;
+  int height;
   char palette[256*3];
-  byte *data;
+  char *data;
 } BITMAP;
 
-void skipf(FILE *fp, int num_bytes);
+void ignoreLine(FILE *fp, int num_bytes);
 void changePalette(char far *palette);
 
-void openBMP(int x, int y, char *file, BITMAP *bitmap) {
-  FILE *filepointer;
-  long index;
-  word numberColor;
+void openFileBMP(int x, int y, char *file, BITMAP *bmpFile) {
+  FILE *fileC;
+  int idx;
+  int cantColors;
   int i, j, ti;
   //open file
-  if ((filepointer = fopen(file, "rb")) == NULL) {
+  if ((fileC = fopen(file, "rb")) == NULL) {
     exit(1);
   }
 
-  //validates bmp
-  if(fgetc(filepointer)!= 'B' || fgetc(filepointer) != 'M'){
-    fclose(filepointer);
+  //bmp header first validation 2 bytes
+  if(fgetc(fileC)!= 'B' || fgetc(fileC) != 'M'){
+    fclose(fileC);
     exit(1);
   }
   //reads image size and color
-  //Lee el tamaño de la imagen y el número de colores.
-  skipf(filepointer,16);
-    fread(&bitmap->width,sizeof(word), 1, filepointer);
-    skipf(filepointer,2);
-    fread(&bitmap->height,sizeof(word), 1, filepointer);
-    skipf(filepointer,22);
-    fread(&numberColor,sizeof(word), 1, filepointer);
-    skipf(filepointer,6);
+  //skips header until width
+  ignoreLine(fileC,16);
+  //get width from bmp format
+  fread(&bmpFile->width, 2, 1, fileC);
+  //ignore the resting 2 bytes of widht
+  ignoreLine(fileC,2);
+  //get height from bmp
+  fread(&bmpFile->height, 2, 1, fileC);
+  //ignore resting bytes until quantity fo colors for palette
+  ignoreLine(fileC,22);
+  //get quantity of colors in 2 bytes
+  fread(&cantColors, 2, 1, fileC);
+  //ignore the resting 2 bytes and the 4 bytes from important colors
+  ignoreLine(fileC,6);
 
-    // 8-bit file
-    if(numberColor==0) numberColor = 256;
+  // 256 colors, in case it is saved in other format
+  if (cantColors == 0) {
+    cantColors = 256;
+  }
 
-    //Lee la información de la paleta.
-    for(index=0;index<numberColor;index++){
-      bitmap->palette[(int)(index*3+2)] = fgetc(filepointer) >> 2;
-      bitmap->palette[(int)(index*3+1)] = fgetc(filepointer) >> 2;
-      bitmap->palette[(int)(index*3+0)] = fgetc(filepointer) >> 2;
-      fgetc(filepointer);
-    }
+  //reads information of palette
+  for (idx=0; idx < cantColors; idx++){
+    bmpFile->palette[idx*3+2] = fgetc(fileC) / 4;
+    bmpFile->palette[idx*3+1] = fgetc(fileC) / 4;
+    bmpFile->palette[idx*3] = fgetc(fileC) / 4;
+    fgetc(fileC);
+  }
 
-  changePalette(bitmap->palette);
-  //Lee el bitmap
-  for(j=(bitmap->height + y);j>=0;j--){
-    for(i=0; i<(bitmap->width); i++){
-      putPixel(i+x, j, fgetc(filepointer));
+  changePalette(bmpFile->palette);
+  //reads only the pixels from bmp file
+  for(j = (bmpFile->height + y); j >=0 ;j--){
+    for(i=0; i < bmpFile->width ; i++){
+      putPixel(i+x, j, fgetc(fileC));
     }
   }
-  fclose(filepointer);
+  fclose(fileC);
 }
 
 //ignores byes
-void skipf(FILE *filepointer, int num_bytes){
+void ignoreLine(FILE *file, int cantBytes){
    int i;
-   for (i=0; i<num_bytes; i++)
-      fgetc(filepointer);
+   for (i=0; i<cantBytes; i++) {
+      fgetc(file);
+   }
 }
 
 //sets the screen colors
+//https://github.com/corbindavenport/cobalt/blob/master/CDROOT/COBALT/SOURCE/BLACKOUT/ASM/BANNER.ASM
 void changePalette(char far *palette){
   asm {
     les dx, [palette]
@@ -96,16 +101,15 @@ void getPalette ( char far *palette){
 }
 
 void saveImage(int x, int y, int width, int height, char file[]){
-  FILE *fp;
+  FILE * fileSave;
   int count, i, j, tempi;
   unsigned char pixel, ch;
   unsigned long headerBuf[13];
   unsigned long palette[256];
   char headerInfo[2] = "BM";
   //opens file
-  fp = fopen(file, "wb");
-  fwrite(headerInfo, sizeof(headerInfo[0]),2,fp);
-  x--; y--;
+  fileSave = fopen(file, "wb");
+  fwrite(headerInfo, sizeof(headerInfo[0]),2, fileSave);
   
   headerBuf[0] = width * height + 1024 + 54;  //size
   headerBuf[1] = 0;                           // reserved
@@ -120,8 +124,7 @@ void saveImage(int x, int y, int width, int height, char file[]){
   headerBuf[10] = 0;            
   headerBuf[11] = 256;                          // colors
   headerBuf[12] = 256;                          // important colors
-  fwrite(headerBuf, sizeof(headerBuf[0]), 13, fp);
-  //set palette
+  fwrite(headerBuf, sizeof(headerBuf[0]), 13,  fileSave);
   getPalette(palette);
   palette[0] = 0;
   palette[1] = 0x8;
@@ -139,59 +142,68 @@ void saveImage(int x, int y, int width, int height, char file[]){
   palette[13] = 0xFF00FF;
   palette[14] = 0xFFFF00;
   palette[15] = 0xFFFFFF;
-  fwrite(palette, sizeof(unsigned long), 255, fp);
+  fwrite(palette, sizeof(unsigned long), 255,  fileSave);
  
   for(j=(y+height); j>=y; j--){
     for(i=x; i<=(width+x)-1; i++){
      pixel=getPixel(i, j);
-     fwrite(&pixel,1,1,fp);
+     fwrite(&pixel,1,1, fileSave);
     }
   }
-  fclose(fp);
+  fclose( fileSave);
 }
 
 void loadImage(int x, int y,char *file, BITMAP *bitmap){
-  FILE *fp;
-  long index;
-  word colorNum;
-  int i,j, tempi;
+  FILE *fileSave;
+  int idx;
+  int cantColors;
+  int i, j;
 
   //opens file
-  if((fp = fopen(file, "rb"))==NULL){
+  if((fileSave = fopen(file, "rb"))==NULL){
     exit(1);
   }
 
   //validates bmpt
-  if(fgetc(fp)!= 'B' || fgetc(fp) != 'M'){
-    fclose(fp);
+  if(fgetc(fileSave)!= 'B' || fgetc(fileSave) != 'M'){
+    fclose(fileSave);
     exit(1);
   }
 
   //read image
-  skipf(fp,16);
-  fread(&bitmap->width,sizeof(word), 1, fp);
-  skipf(fp,2);
-  fread(&bitmap->height,sizeof(word), 1, fp);
-  skipf(fp,22);
-  fread(&colorNum,sizeof(word), 1, fp);
-  skipf(fp,6);
+    //reads image size and color
+  //skips header until width
+  ignoreLine(fileSave,16);
+  //get width from bmp format
+  fread(&bitmap->width, 2, 1, fileSave);
+  //ignore the resting 2 bytes of widht
+  ignoreLine(fileSave,2);
+  //get height from bmp
+  fread(&bitmap->height, 2, 1, fileSave);
+  //ignore resting bytes until quantity fo colors for palette
+  ignoreLine(fileSave,22);
+  //get quantity of colors in 2 bytes
+  fread(&cantColors, 2, 1, fileSave);
+  //ignore the resting 2 bytes and the 4 bytes from important colors
+  ignoreLine(fileSave,6);
 
-    //Sets bits
-    if(colorNum==0) colorNum = 256;
+  if (cantColors == 0) {
+    cantColors = 256;
+  }
   
-    //reads palette
-    for(index=0;index<colorNum;index++){
-      bitmap->palette[(int)(index*3+2)] = fgetc(fp) >> 2;
-      bitmap->palette[(int)(index*3+1)] = fgetc(fp) >> 2;
-      bitmap->palette[(int)(index*3+0)] = fgetc(fp) >> 2;
-      fgetc(fp);
-    }
+  //reads palette
+  for(idx=0; idx < cantColors;idx++){
+    bitmap->palette[idx*3+2] = fgetc(fileSave) / 4;
+    bitmap->palette[idx*3+1] = fgetc(fileSave) / 4;
+    bitmap->palette[idx*3] = fgetc(fileSave) / 4;
+    fgetc(fileSave);
+  }
 
   changePalette(bitmap->palette);
   for(j=(bitmap->height+y);j>=y;j--){
     for(i=0; i<(bitmap->width); i++){
-      putPixel(i+x, j, fgetc(fp));
+      putPixel(i+x, j, fgetc(fileSave));
     }
   }
-  fclose(fp);
+  fclose(fileSave);
 }
