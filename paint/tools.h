@@ -14,7 +14,7 @@ void setNextNode(node_t ** next_node, int x, int y);
 void bucket(int x, int y, char fillColor, char clickColor, int pattern){
   node_t *link, *nextNode, *remove;
   int calcX, calcY;
-
+  if (fillColor == clickColor && pattern == 0) return;
   //node decl
   link = (node_t*) malloc(sizeof(node_t));
   link->val_x = x;
@@ -173,5 +173,7 @@ void setNextNode(node_t ** next_node, int x, int y) {
 //SPRAY TOOL
 void paintSpray(int x, int y, int color, int width) {
   delay(5);
-  putPixel(x - rand()%width, y-rand()%width, color);
+  if ( y > y1_Draw) {
+    putPixel(x - rand()%width, y-rand()%width, color);
+  }
 }

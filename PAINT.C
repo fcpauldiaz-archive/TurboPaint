@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <dos.h>
 #include <math.h>
-#include <time.h>
 
 #define MAX_VERTICES 100
 int vertex[MAX_VERTICES][2];
@@ -207,6 +206,7 @@ void main() {
         }
         else {
           actualColor2 = tempColor;
+          actualPattern = 0;
           paintColorPickerTwo(tempColor);
         }
         mouseShow(x, y);

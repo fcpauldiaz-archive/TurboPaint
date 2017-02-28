@@ -42,6 +42,7 @@ void plot_(int x, int y, int color) {
   putPixelWidth(x, y, color, 15);
 }
 //NOT WORKING
+/*
 void draw_line_antialias(
   unsigned int x1, unsigned int y1,
   unsigned int x2, unsigned int y2,
@@ -108,7 +109,7 @@ void draw_line_antialias(
       intery += gradient;
     }
   }
-}
+}*/
 //Digital Differential Analyzer (DDA) algorithm 
 //https://www.tutorialspoint.com/computer_graphics/line_generation_algorithm.htm
 void drawLine(int x1, int y1, int x2, int y2, int color, int width) {
@@ -279,9 +280,9 @@ void savePixel(int x1, int y1, int x2, int y2, int width) {
 //draw rectangle with no fill
 void drawRectangle(int x1, int y1, int x2, int y2, int color, int width) {
   drawLine(x1,y1,x2,y1,color,width);
-  drawLine(x1,y1+1,x1,y2,color,width);
-  drawLine(x2,y1+1,x2,y2,color,width);
-  drawLine(x1+1,y2,x2-1,y2,color,width);
+  drawLine(x1,y1,x1,y2,color,width);
+  drawLine(x2,y1,x2,y2,color,width);
+  drawLine(x1,y2,x2,y2,color,width);
 }
 
 void savePixelRectangle(int x1, int y1, int x2, int y2, int width) {
@@ -497,7 +498,7 @@ void scanLine(int cant_edges, int color, int width) {
 
   vertex[cant_edges][0] = vertex[0][0];
   vertex[cant_edges][1] = vertex[0][1];
-
+  //set all slopes for edges
   for(i=0; i < cant_edges; i++) {
     //get differential
     dy = vertex[i+1][1] - vertex[i][1];
@@ -514,23 +515,25 @@ void scanLine(int cant_edges, int color, int width) {
   for (y=0; y < MAX_Y; y++) {
     k=0;
     for (i=0; i < cant_edges; i++) {
-      if (((vertex[i][1] <= y) && (vertex[i+1][1]>y)) || ((vertex[i][1]>y) && (vertex[i+1][1]<=y))){
+      if (((vertex[i][1] <= y) && (vertex[i+1][1] > y)) || 
+          ((vertex[i][1] > y) && (vertex[i+1][1]<=y))) {
         xi[k]=(int)(vertex[i][0]+slope[i]*(y-vertex[i][1]));
         k++;
       }
     }
-    for (j=0; j<k-1; j++) { /*- Arrange x-intersections in order -*/
-      for (i=0; i<k-1; i++) {
-        //swap values
-        if(xi[i] > xi[i+1]) {
+    // Arrange x-intersections in order
+    for (j=0; j < k-1; j++) { 
+      for (i=0; i < k-1; i++) {
+        //order values
+        if (xi[i] > xi[i+1]) {
           temp = xi[i];
           xi[i] = xi[i+1];
           xi[i+1] = temp;
         }
       }
     }
-    for(i=0; i < k;i+=2) {
-      drawLine(xi[i],y,xi[i+1]+1,y, color, width);
+    for(i=0; i < k; i+=2) {
+      drawLine(xi[i],y,xi[i+1],y, color, width);
     }
   }
 }
