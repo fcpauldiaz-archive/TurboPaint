@@ -5,28 +5,18 @@
  */
 
 long resolY, resolX;
-long screenX, screenY, numberOfPages;
 char currentPage;
 int forceDraw = 0;
 
-int SVGA(int mode, long w, long h){
+int SVGA(int size, int w, int h){
   resolY = h;
   resolX = w;
-  numberOfPages = ((resolX*resolY)/65536L);
-  screenX = resolX-1;
-  screenY = resolY-1;
   //https://es.wikipedia.org/wiki/Int_10h
   asm {
     MOV AX, 4F02H  //establecer modo supervga
-    MOV BX, [mode] //size of screen
+    MOV BX, [size] //size of screen
     INT 10H        //interrupt screen       
-    CMP AX, 004FH //test success
-    JNE Error
   }
-  //retornar boolean
-  return(1);
-  Error:;
-  return(0);
 }
 
 
@@ -46,10 +36,10 @@ void setPage(char page){
     CMP[currentPage], AL
     JE dontChangePage
     MOV [currentPage], AL
-    MOV AX, 4F05H   //read window
-    XOR BX, BX 
-    XOR DX, DX
-    MOV DL, [page]
+    MOV AX, 4F05H   //VESA CHANGE PAGE
+    XOR BX, BX      //BX IS = 0
+    XOR DX, DX      //DX IS = 0
+    MOV DL, [page]  //SAVE PAGE IN D REGISTER
     INT 10H
   }
   dontChangePage:;
@@ -63,13 +53,13 @@ void putPixel(int x, int y, char drawcolor){
   char page;
 
   //verify limits
-  if (x > screenX || x <0 || y > screenY || y < 0) {
+  if (x > resolX || x < 0 || y > resolY || y < 0) {
     return;
   }
 
   memoryPosition = (y * resolX) + x;
-  page = memoryPosition >> 16;
-  pixelOffset = memoryPosition - (page << 16);
+  page = memoryPosition / 65536;
+  pixelOffset = memoryPosition - (page / 65536);
  
   //change to correct page
   if (page != currentPage){
@@ -116,8 +106,8 @@ char getPixel(int x, int y) {
   char page, color;
 
   positionMem = (y * resolX) + x;
-  page = positionMem >> 16;
-  offsetPixel = positionMem - (page << 16);
+  page = positionMem / 65536;
+  offsetPixel = positionMem - (page / 65536);
 
   if (page != currentPage) {
     setPage(page);

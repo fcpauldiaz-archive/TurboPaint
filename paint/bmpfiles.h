@@ -90,7 +90,7 @@ void changePalette(char far *palette){
 }
 
 //get palette
-void getPalette ( char far *palette){
+void activatePalette ( char far *palette){
   asm {
     les dx, [palette]
     mov ax, 0x1017
@@ -105,11 +105,11 @@ void saveImage(int x, int y, int width, int height, char file[]){
   int count, i, j, tempi;
   unsigned char pixel, ch;
   unsigned long headerBuf[13];
-  unsigned long palette[256];
+  long palette[256];
   char headerInfo[2] = "BM";
   //opens file
   fileSave = fopen(file, "wb");
-  fwrite(headerInfo, sizeof(headerInfo[0]),2, fileSave);
+  fwrite(headerInfo, sizeof(headerInfo[0]), 2, fileSave);
   x--; y--;                                   //improve file image at save
   headerBuf[0] = width * height + 1024 + 54;  //size
   headerBuf[1] = 0;                           // reserved
@@ -125,7 +125,7 @@ void saveImage(int x, int y, int width, int height, char file[]){
   headerBuf[11] = 256;                          // colors
   headerBuf[12] = 256;                          // important colors
   fwrite(headerBuf, sizeof(headerBuf[0]), 13,  fileSave);
-  getPalette(palette);
+  activatePalette(palette);
   palette[0] = 0;
   palette[1] = 0x8;
   palette[2] = 0x800;
@@ -142,7 +142,7 @@ void saveImage(int x, int y, int width, int height, char file[]){
   palette[13] = 0xFF00FF;
   palette[14] = 0xFFFF00;
   palette[15] = 0xFFFFFF;
-  fwrite(palette, sizeof(unsigned long), 255,  fileSave);
+  fwrite(palette, sizeof(long), 255,  fileSave);
  
   for(j=(y+height); j>=y; j--){
     for(i=x; i<=(width+x)-1; i++){

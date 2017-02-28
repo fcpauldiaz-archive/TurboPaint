@@ -68,7 +68,7 @@ void getMouse(int *mouse_x, int *mouse_y, int *clicked){
   asm {
     MOV AX, 03H                 
     INT 33H         
-    AND BX, 0000000000000011B                 //obtains reuslt
+    AND BX, 11B                 //obtains reuslt
     MOV click_button, BX             
     MOV posx, CX             
     MOV posy, DX             
@@ -78,8 +78,8 @@ void getMouse(int *mouse_x, int *mouse_y, int *clicked){
   *clicked = click_button;             //saves result
 }
 
-// Sets max boundaries for mouse
-void validateMouse(int x_limit, int y_limit) {
+// adapts mouse to screen size
+void adaptMouse(int x_limit, int y_limit) {
   asm {
     PUSH AX
     PUSH CX

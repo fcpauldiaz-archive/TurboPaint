@@ -45,7 +45,7 @@ void main() {
   }
   
   initMouse();
-  validateMouse(MAX_X, MAX_Y);
+  adaptMouse(MAX_X, MAX_Y);
 
   if((fontF = fopen ("paint/fuente.fnt","rb"))== NULL){
     return;
@@ -503,6 +503,9 @@ void main() {
             break;
           case CUT:
             x1 = x; y1 = y;
+            mouseHide(x, y);
+            saveUndo();
+            mouseShow(x, y);
             while (clicked == 1) {
               repaintMouse(&x, &y, &clicked, &xtemp, &ytemp);
             }

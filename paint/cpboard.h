@@ -15,7 +15,6 @@ void saveUndo() {
     }
     //finish save undo
     fprintf(f, "%i\n", 6969); 
-    // Se cierra el archivo
     fclose(f);
     undoCounter = undoCounter + 1;
   }
@@ -66,7 +65,6 @@ void copyPixels(int x1, int y1, int x2, int y2) {
   }
   //finish save pixels
   fprintf(f, "%i\n", 6969); 
-  // Se cierra el archivo
   fclose(f);
 }
 //paste 

@@ -6,9 +6,9 @@
 #define PAINT_CIRCLE 5
 #define ELLIPSE 6
 #define PAINT_ELLIPSE 7 
-#define PENCIL 8
-#define BUCKET 9
-#define SPRAY 10
+#define SPRAY 8
+#define PENCIL 9
+#define BUCKET 10
 #define ERASER 11
 #define POLYGON 12
 #define PAINT_POLYGON 13
