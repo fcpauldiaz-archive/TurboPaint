@@ -450,13 +450,13 @@ void drawEllipse(float xc, float yc, float rx, float ry, int color, int width) {
 }
 //http://tutsheap.com/c/mid-point-ellipse-drawing-algorithm/
 void ellipse(float xc, float yc, float x, float y, int color, int width) {
-  //parte de abajo
-  putPixelWidth(xc + x, yc + y, color, width); //der
-  putPixelWidth(xc - x, yc + y, color, width); //izq
+  //down
+  putPixelWidth(xc + x, yc + y, color, width); //right
+  putPixelWidth(xc - x, yc + y, color, width); //left
   if (yc - y <= y1_Draw) return; //validate tools
-  //parte de arriba
-  putPixelWidth(xc + x, yc - y, color, width);  //der
-  putPixelWidth(xc - x, yc - y, color, width); //izq
+  //up
+  putPixelWidth(xc + x, yc - y, color, width);  //right
+  putPixelWidth(xc - x, yc - y, color, width); //left
 }
 
 void paintEllipse(int x0, int y0, int radiousX, int radiousY, int outerColor, char innerColor, int width) {
@@ -493,7 +493,7 @@ void paintEllipse(int x0, int y0, int radiousX, int radiousY, int outerColor, ch
 void scanLine(int cant_edges, int color, int width) {
   int i,j,k,gd,gm,dy,dx;
   int x,y,temp;
-  int xi[100];
+  int lineDraw[100];
   float slope[100];
 
   vertex[cant_edges][0] = vertex[0][0];
@@ -517,7 +517,7 @@ void scanLine(int cant_edges, int color, int width) {
     for (i=0; i < cant_edges; i++) {
       if (((vertex[i][1] <= y) && (vertex[i+1][1] > y)) || 
           ((vertex[i][1] > y) && (vertex[i+1][1]<=y))) {
-        xi[k]=(int)(vertex[i][0]+slope[i]*(y-vertex[i][1]));
+        lineDraw[k]=(int)(vertex[i][0]+slope[i]*(y-vertex[i][1]));
         k++;
       }
     }
@@ -525,15 +525,15 @@ void scanLine(int cant_edges, int color, int width) {
     for (j=0; j < k-1; j++) { 
       for (i=0; i < k-1; i++) {
         //order values
-        if (xi[i] > xi[i+1]) {
-          temp = xi[i];
-          xi[i] = xi[i+1];
-          xi[i+1] = temp;
+        if (lineDraw[i] > lineDraw[i+1]) {
+          temp = lineDraw[i];
+          lineDraw[i] = lineDraw[i+1];
+          lineDraw[i+1] = temp;
         }
       }
     }
     for(i=0; i < k; i+=2) {
-      drawLine(xi[i],y,xi[i+1],y, color, width);
+      drawLine(lineDraw[i],y,lineDraw[i+1],y, color, width);
     }
   }
 }

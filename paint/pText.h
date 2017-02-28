@@ -11,10 +11,10 @@ void showText(int x, int y, char color, char font[][16*16]){
   
   charTxt = 0;
   while (charTxt != ENTER) {
-    if (kbhit()) {
+    if (kbhit()) { //wait for char to be click
       charTxt = getch();
-      if ( !(x1+SIZE_LETTER < MAX_X) && charTxt!= BACKSPACE) {
-        if(y1+SIZE_LETTER < MAX_Y) {
+      if ( !(x1 + SIZE_LETTER < MAX_X) && charTxt != BACKSPACE) {
+        if(y1 + SIZE_LETTER < MAX_Y) {
           x1 = x;
           y1 += 18;
         } 
@@ -25,7 +25,7 @@ void showText(int x, int y, char color, char font[][16*16]){
             saveErase[textX][textY] = getPixel(x1+textX, y1+textY);
           }
         }
-        putChar(x1, y1, charTxt, color, font);
+        insertChar(x1, y1, charTxt, color, font);
         x1 += SIZE_LETTER + 1;
       } else if( charTxt == BACKSPACE && x1 != x) {
         x1 += - (SIZE_LETTER + 1);
@@ -38,11 +38,13 @@ void showText(int x, int y, char color, char font[][16*16]){
     }
   }
 }
-int putChar(int x, int y, int charNumber, char color,  char font[][16*16]){
+int insertChar(int x, int y, int charNumber, char color,  char font[][16*16]){
   int offsetChar;
   char w, h;
+  //caps
   if(charNumber > 31 && charNumber < 91) {
     offsetChar = charNumber - 32;
+  //no caps
   } else if (charNumber > 96 && charNumber < 123){
     offsetChar = charNumber - 2*32;
   } else {

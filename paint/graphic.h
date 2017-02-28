@@ -13,7 +13,7 @@ int SVGA(int size, int w, int h){
   resolX = w;
   //https://es.wikipedia.org/wiki/Int_10h
   asm {
-    MOV AX, 4F02H  //establecer modo supervga
+    MOV AX, 4F02H  //stablish svga mode
     MOV BX, [size] //size of screen
     INT 10H        //interrupt screen       
   }
